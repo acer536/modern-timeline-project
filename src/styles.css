@@ -1,0 +1,1449 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 1. 為 #siteHero 區塊設定背景圖片與基礎定位 */
+.site-hero {
+    position: relative;
+    background-image: url('../images/preview.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* 讓背景在滾動時有視差效果 */
+}
+
+/* 2. 在背景圖片上加上一層固定的、效果最好的深色遮罩 */
+.site-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.6); /* 固定使用 60% 透明度的黑色遮罩，確保清晰 */
+}
+
+/* 3. 確保所有文字內容都顯示在遮罩之上 */
+.site-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* 4. 強制設定 Hero 區塊內所有文字的顏色為白色系，覆蓋主題預設 */
+.site-hero h1,
+.site-hero .prologue-title,
+.site-hero .prologue-text strong {
+    color: #FFFFFF !important; /* 主標題和粗體字使用純白色 */
+    text-shadow: none !important;
+}
+
+.site-hero p,
+.site-hero .prologue-text {
+    color: #E5E7EB !important; /* 副標題和內文使用非常淺的灰色 */
+    text-shadow: none !important;
+}
+
+/* 5. 統一按鈕樣式，確保在任何情況下都清晰可見 */
+.site-hero .prologue-button {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: #FFFFFF !important;
+    backdrop-filter: blur(2px);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.site-hero .prologue-button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #111827 !important;
+}
+
+/* 1. 移除一般事件(.timeline-event-content)的所有卡片樣式 */
+.timeline-event-content {
+    background-color: transparent; /* 確保一般事件背景是透明的 */
+    /* 移除所有 hover 效果和多餘樣式 */
+}
+
+/* 2. 僅為「和平進程」和「關鍵時刻」的全寬區塊加上卡片效果 */
+.timeline-peace-interruption .peace-text-block,
+.timeline-pivotal-interruption .pivotal-text-block {
+    background-color: transparent; /* 背景完全透明 */
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    transition: transform 0.2s ease-out; /* 只保留 transform 的過渡動畫 */
+}
+
+/* 當滑鼠移到這兩種特殊卡片上時，才觸發放大效果 */
+.timeline-peace-interruption .peace-text-block:hover,
+.timeline-pivotal-interruption .pivotal-text-block:hover {
+    transform: translateY(-5px) scale(1.01);
+}
+
+:root {
+            /* --- Light Mode --- */
+            --bg-main-light: #f4f4f5;
+            --text-primary-light: #27272a;
+            --text-secondary-light: #52525b;
+            --timeline-line-light: #a1a1aa;
+            --peace-accent-light: #22c55e;
+            --pivotal-accent-light: #ca8a04; /* Pivotal Event - Gold */
+            --palestinian-major-accent-light: #ef4444; /* Palestinian Major Attack */
+            --palestinian-minor-accent-light: #f97316; /* Palestinian Minor Attack */
+            --israel-military-accent-light: #0369a1;  /* Israeli Military */
+            --israel-nonmilitary-accent-light: #4f46e5; /* Israeli Non-Military/Settler */
+            --highlight-accent-color-light: #64748b; /* Main Accent - Slate */
+            --year-overlay-text-light: rgba(39, 39, 42, 0.06);
+            --nav-bg-light: rgba(244, 244, 245, 0.85);
+            --nav-text-light: #27272a;
+            --nav-active-bg-light: rgba(0,0,0,0.05);
+            --modal-bg-light: rgba(244, 244, 245, 0.98);
+            --bg-boundary-highlight-light: rgba(0,0,0,0.02);
+            --chart-grid-color-light: rgba(0,0,0,0.1);
+            --chart-tick-color-light: #52525b;
+            --hero-bg-light: #e9e9eb;
+            --hero-text-light: #27272a;
+            --hero-subtext-light: #52525b;
+            --chart-legend-color-light: var(--chart-tick-color-light);
+            --summary-bg-light: rgba(39, 39, 42, 0.035);
+            --summary-border-light: rgba(39, 39, 42, 0.1);
+            --tooltip-bg-light: rgba(244, 244, 245, 0.97); /* 淺色背景 */
+			--tooltip-text-light: #27272a;
+            --tooltip-border-light: rgba(255, 255, 255, 0.1);
+            
+            /* --- Splash Screen (Light Mode) --- */
+	        --splash-bg-light: #e9e9eb;
+	        --splash-text-primary-light: #27272a;
+	        --splash-text-secondary-light: #52525b;
+	        --splash-cta-border-light: #64748b;
+
+            /* --- 新增：淺色主題的背景圖案 (無黑點) --- */
+            --splash-bg-image-light:
+                radial-gradient(ellipse 80% 70% at 70% 80%, oklch(50% 0.17 265 / 0.22) 0%, oklch(50% 0.17 265 / 0.11) 35%, transparent 70%),
+                radial-gradient(ellipse 70% 50% at 30% 40%, oklch(55% 0.15 285 / 0.18) 0%, oklch(55% 0.15 285 / 0.09) 35%, transparent 70%);
+            --splash-bg-size-light: auto, auto;
+
+            /* --- Dark Mode --- */
+            --bg-main-dark: #121212;
+            --text-primary-dark: #e4e4e7;
+            --text-secondary-dark: #a1a1aa;
+            --timeline-line-dark: #3f3f46;
+            --peace-accent-dark: #4ade80;
+            --pivotal-accent-dark: #eab308; /* Pivotal Event - Gold */
+            --palestinian-major-accent-dark: #f87171; /* Palestinian Major Attack */
+            --palestinian-minor-accent-dark: #fb923c; /* Palestinian Minor Attack */
+            --israel-military-accent-dark: #38bdf8;  /* Israeli Military */
+            --israel-nonmilitary-accent-dark: #818cf8; /* Israeli Non-Military/Settler */
+            --highlight-accent-color-dark: #94a3b8; /* Main Accent - Slate */
+            --year-overlay-text-dark: rgba(228, 228, 231, 0.03);
+            --nav-bg-dark: rgba(24, 24, 27, 0.85);
+            --nav-text-dark: #e4e4e7;
+            --nav-active-bg-dark: rgba(255,255,255,0.07);
+            --modal-bg-dark: rgba(39, 39, 42, 0.95);
+            --bg-boundary-highlight-dark: rgba(255,255,255,0.025);
+            --chart-grid-color-dark: rgba(228, 228, 231, 0.1);
+            --chart-tick-color-dark: #a1a1aa;
+            --hero-bg-dark: #0d1117;
+            --hero-text-dark: #f0f6fc;
+            --hero-subtext-dark: #c9d1d9;
+            --chart-legend-color-dark: var(--chart-tick-color-dark);
+            --summary-bg-dark: rgba(228, 228, 231, 0.03);
+            --summary-border-dark: rgba(228, 228, 231, 0.1);
+            --tooltip-bg-dark: rgba(39, 39, 42, 0.95);   /* 深色背景 */
+			--tooltip-text-dark: #f4f4f5;
+            --tooltip-border-dark: rgba(0, 0, 0, 0.1);
+
+            /* --- Splash Screen (Dark Mode) --- */
+	        --splash-bg-dark: #0d1117;
+	        --splash-text-primary-dark: #f0f6fc;
+	        --splash-text-secondary-dark: #c9d1d9;
+	        --splash-cta-border-dark: #52525b;
+
+            /* --- 新增這段：深色主題的背景圖案 (有黑點) --- */
+            --splash-bg-image-dark:
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0),
+                radial-gradient(ellipse 80% 70% at 70% 80%, oklch(50% 0.17 265 / 0.22) 0%, oklch(50% 0.17 265 / 0.11) 35%, transparent 70%),
+                radial-gradient(ellipse 70% 50% at 30% 40%, oklch(55% 0.15 285 / 0.18) 0%, oklch(55% 0.15 285 / 0.09) 35%, transparent 70%);
+            --splash-bg-size-dark: 2px 2px, auto, auto;
+
+            /* --- CSS variable for mobile timeline offset --- */
+            --timeline-mobile-offset: 20px;
+            --timeline-content-offset: 25px;
+
+            /* --- Generic variables (default to dark mode values) --- */
+            --bg-main: var(--bg-main-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --timeline-line: var(--timeline-line-dark);
+            --peace-accent-color: var(--peace-accent-dark);
+            --pivotal-accent-color: var(--pivotal-accent-dark);
+            --palestinian-major-accent-color: var(--palestinian-major-accent-dark);
+            --palestinian-minor-accent-color: var(--palestinian-minor-accent-dark);
+            --israel-military-accent-color: var(--israel-military-accent-dark);
+            --israel-nonmilitary-accent-color: var(--israel-nonmilitary-accent-dark);
+            --highlight-accent-color: var(--highlight-accent-color-dark);
+            --year-overlay-text-color: var(--year-overlay-text-dark);
+            --nav-bg: var(--nav-bg-dark);
+            --nav-text: var(--nav-text-dark);
+            --nav-active-bg: var(--nav-active-bg-dark);
+            --nav-active-text: var(--nav-text-dark);
+            --modal-bg: var(--modal-bg-dark);
+            --bg-boundary-highlight: var(--bg-boundary-highlight-dark);
+            --text-shadow-color: var(--bg-main-dark);
+            --chart-grid-color: var(--chart-grid-color-dark);
+            --chart-tick-color: var(--chart-tick-color-dark);
+            --chart-legend-color: var(--chart-legend-color-dark);
+            --hero-bg: var(--hero-bg-dark);
+            --hero-text: var(--hero-text-dark);
+            --hero-subtext: var(--hero-subtext-dark);
+            --summary-bg: var(--summary-bg-dark);
+            --summary-border: var(--summary-border-dark);
+            --tooltip-bg: var(--tooltip-bg-dark);
+            --tooltip-text: var(--tooltip-text-dark);
+            --tooltip-border: var(--tooltip-border-dark);
+            --splash-bg: var(--splash-bg-dark);
+	        --splash-text-primary: var(--splash-text-primary-dark);
+	        --splash-text-secondary: var(--splash-text-secondary-dark);
+	        --splash-cta-border: var(--splash-cta-border-dark);
+            --splash-bg-image: var(--splash-bg-image-dark);
+            --splash-bg-size: var(--splash-bg-size-dark);
+			--ripple-color: rgba(255, 255, 255, 0.2);
+        }
+
+        html:not(.dark-mode) {
+            --bg-main: var(--bg-main-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --timeline-line: var(--timeline-line-light);
+            --peace-accent-color: var(--peace-accent-light);
+            --pivotal-accent-color: var(--pivotal-accent-light);
+            --palestinian-major-accent-color: var(--palestinian-major-accent-light);
+            --palestinian-minor-accent-color: var(--palestinian-minor-accent-light);
+            --israel-military-accent-color: var(--israel-military-accent-light);
+            --israel-nonmilitary-accent-color: var(--israel-nonmilitary-accent-light);
+            --highlight-accent-color: var(--highlight-accent-color-light);
+            --year-overlay-text-color: var(--year-overlay-text-light);
+            --nav-bg: var(--nav-bg-light);
+            --nav-text: var(--nav-text-light);
+            --nav-active-bg: var(--nav-active-bg-light);
+            --nav-active-text: var(--nav-text-light);
+            --modal-bg: var(--modal-bg-light);
+            --bg-boundary-highlight: var(--bg-boundary-highlight-light);
+            --text-shadow-color: var(--bg-main-light);
+            --chart-grid-color: var(--chart-grid-color-light);
+            --chart-tick-color: var(--chart-tick-color-light);
+            --chart-legend-color: var(--chart-legend-color-light);
+            --hero-bg: var(--hero-bg-light);
+            --hero-text: var(--hero-text-light);
+            --hero-subtext: var(--hero-subtext-light);
+            --summary-bg: var(--summary-bg-light);
+            --summary-border: var(--summary-border-light);
+            --tooltip-bg: var(--tooltip-bg-light);
+            --tooltip-text: var(--tooltip-text-light);
+            --tooltip-border: var(--tooltip-border-light);
+            --splash-bg: var(--splash-bg-light);
+	        --splash-text-primary: var(--splash-text-primary-light);
+	        --splash-text-secondary: var(--splash-text-secondary-light);
+	        --splash-cta-border: var(--splash-cta-border-light);
+            --splash-bg-image: var(--splash-bg-image-light);
+            --splash-bg-size: var(--splash-bg-size-light);
+			--ripple-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+        /* --- 為整個網站的主要區塊，統一加上平滑的變色動畫 --- */
+		body,
+		.period-section,
+		.site-footer,
+		.modal-content {
+		    transition: background-color 0.4s ease, color 0.4s ease;
+		}
+
+        body.modal-is-open {
+            overflow: hidden;
+        }
+
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            color: var(--splash-text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10000;
+            transition: opacity 0.7s ease-out, visibility 0.7s ease-out;
+            opacity: 1;
+            visibility: visible;
+            background-color: var(--splash-bg);
+            background-image: var(--splash-bg-image); /* 使用變數 */
+            background-size: var(--splash-bg-size);   /* 使用變數 */
+            background-repeat: repeat, no-repeat, no-repeat;
+            cursor: pointer;
+        }
+
+        #ember-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ember {
+            position: absolute;
+            bottom: -20px;
+            background-color: rgba(255, 100, 20, 0.5);
+            border-radius: 50%;
+            animation: float-up linear infinite;
+            filter: blur(1.5px);
+            box-shadow: 0 0 5px rgba(255, 120, 40, 0.7), 0 0 10px rgba(255, 120, 40, 0.5);
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(var(--drift-x, 20px));
+                opacity: 0;
+            }
+        }
+
+        #splashScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #splashIntroSequence {
+            text-align: center;
+            z-index: 5;
+            padding: 1rem;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .intro-line {
+            font-family: 'Noto Sans TC', 'Open Sans', sans-serif;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: var(--splash-text-secondary);
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+            max-width: 90vw;
+        }
+        .intro-line:last-child {
+            margin-bottom: 0;
+        }
+        
+        #splashMainMenu {
+            opacity: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            padding: 1rem;
+        }
+        .splash-title {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: var(--splash-text-primary);
+            text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .splash-subtitle {
+            font-family: 'Noto Sans TC', 'Open Sans', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--splash-text-secondary);
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.2);
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: var(--ripple-color);
+            width: 100px;
+            height: 100px;
+            margin-top: -50px;
+            margin-left: -50px;
+            transform: scale(0);
+            animation: ripple-effect 0.7s ease-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes ripple-effect {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            html { scroll-behavior: auto !important; }
+            #ember-container { display: none; }
+            .splash-content .click-to-enter { animation: none; }
+            .ripple { display: none; }
+        }
+
+        #mainContentWrapper.initially-hidden {
+            display: none;
+        }
+
+        .site-hero {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            color: var(--hero-text);
+            background-color: var(--hero-bg);
+            padding: 0;
+            border-bottom: 1px solid var(--timeline-line);
+        }
+        
+        .site-hero-stage-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        
+        .site-hero-content { 
+            position: relative; 
+            z-index: 2; 
+            width: 100%;
+            max-width: 750px;
+        }
+        .site-hero h1 {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 0.05em;
+        }
+        .site-hero p {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--hero-subtext);
+            opacity: 0.9;
+            margin-top: 0.75rem;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .prologue-title {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--hero-text);
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .prologue-title { margin-top: 0; }
+        }
+
+        .prologue-text {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--hero-subtext);
+        }
+        .prologue-text strong {
+            color: var(--hero-text);
+            font-weight: 600;
+        }
+        
+        .prologue-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: 1px solid var(--highlight-accent-color);
+            color: var(--highlight-accent-color);
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, transform 0.15s;
+            font-weight: 500;
+        }
+        html:not(.dark-mode) .prologue-button:hover {
+            background-color: var(--highlight-accent-color-light);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        html.dark-mode .prologue-button:hover {
+            background-color: var(--highlight-accent-color-dark);
+            color: #1e293b;
+            transform: translateY(-2px);
+        }
+
+        #showPrologueButton {
+            margin-top: 2.5rem;
+            padding: 1rem;
+        }
+        #showPrologueButton svg {
+            margin-left: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        
+        #startTimelineButton {
+        }
+        #startTimelineButton:hover {
+            /* Keep existing hover effect, but ensure animation doesn't get fully overridden */
+            animation-play-state: paused;
+        }
+
+        @keyframes bounce-arrow {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(8px); }
+            60% { transform: translateY(4px); }
+        }
+        
+        @keyframes pulse-button-scale {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .period-navigation {
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 0.7rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            border-bottom: 1px solid var(--timeline-line);
+            overflow-x: auto;
+            white-space: nowrap;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, background-color 0.4s ease, color 0.4s ease;
+        }
+        .period-navigation.nav-hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .period-navigation button {
+            background-color: transparent;
+            color: var(--nav-text);
+            border: none;
+            padding: 0.6rem 1.1rem;
+            margin: 0 0.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s, transform 0.1s;
+        }
+        html:not(.dark-mode) .period-navigation button:hover { background-color: rgba(0,0,0,0.05); }
+        html.dark-mode .period-navigation button:hover { background-color: rgba(255,255,255,0.07); }
+
+        .period-navigation button.active {
+            background-color: var(--nav-active-bg);
+            color: var(--nav-active-text);
+            font-weight: 600;
+        }
+
+        .period-section {
+            min-height: 90vh;
+            padding: 4rem 1rem 3rem 1rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-main);
+        }
+        .period-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--bg-boundary-highlight), transparent);
+            z-index: 0; pointer-events: none;
+        }
+        .period-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--bg-boundary-highlight), transparent);
+            z-index: 0; pointer-events: none;
+        }
+
+        .period-year-overlay {
+		    position: absolute;
+		    top: 50%; /* 自動垂直置中 */
+		    left: 50%;
+		    transform: translate(-50%, -50%); 
+		
+		    font-family: 'Montserrat', sans-serif;
+		    font-size: clamp(6rem, 15vw, 15rem);
+		    font-weight: 800;
+		    color: var(--year-overlay-text-color);
+		    z-index: 1; 
+		    pointer-events: none;
+		    white-space: nowrap; 
+		    line-height: 0.75; 
+		    text-align: center;
+		    /* transition: top 0.3s ease-in-out;  <-- 不再需要這個動畫 */
+		}
+
+        .timeline {
+            position: relative;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            top: 0; bottom: 0; width: 3px; background-color: var(--timeline-line);
+            opacity: 0.5; z-index: 1;
+            -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 20px), transparent 100%);
+            mask-image: linear-gradient(to bottom, black calc(100% - 20px), transparent 100%);
+        }
+
+        /* 控制時間軸事件預設寬度 */
+        .timeline-wrapper {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* 控制中文版的寬度 */
+        .lang-zh .timeline-wrapper {
+            max-width: 800px;
+        }
+
+        .timeline-interruption {
+            width: 100%; text-align: center; padding: 1rem 0; margin: 1rem 0;
+            position: relative; background-color: var(--bg-main); z-index: 2;
+        }
+
+		.timeline-interruption::before {
+		    content: ''; position: absolute; left: 50%; bottom: 100%;
+		    transform: translateX(-50%); width: 3px; height: 20px;
+		    background: linear-gradient(to top, var(--bg-main) 10%, transparent 100%);
+		    z-index: 1;
+		}
+		
+		.timeline-interruption::after {
+		    content: ''; position: absolute; left: 50%; top: 100%;
+		    transform: translateX(-50%); width: 3px; height: 20px;
+		    background: linear-gradient(to bottom, var(--bg-main) 10%, transparent 100%);
+		    z-index: 1;
+		}
+
+		/* 當區塊被高亮時，隱藏造成問題的漸層圖層 */
+		.timeline-interruption.highlight-active::before,
+		.timeline-interruption.highlight-active::after {
+		    display: none;
+		}
+
+        .period-summary {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 750px;
+            margin: 3rem auto 1rem auto;
+            /* 稍微減少上下 padding，為新的 golden-sentence 留出空間 */
+            padding: 1rem 1.75rem; 
+            background-color: var(--summary-bg);
+            border-left: 4px solid var(--highlight-accent-color);
+            border-radius: 4px;
+            text-align: left;
+        }
+
+		/* 無背景、純排印風格的 golden-sentence */
+		.golden-sentence {
+		    font-family: 'Merriweather', 'Noto Sans TC', serif;
+		    font-size: clamp(1.2rem, 2.8vw, 1.45rem);
+		    font-weight: 700;
+		    font-style: italic;
+		    line-height: 1.6;
+		    /* 將文字顏色設為強調色 */
+		    color: var(--highlight-accent-color);
+		    
+		    /* 移除背景相關樣式，增加與周圍的空間感 */
+		    position: relative;
+		    display: block;
+		    margin: 1.5rem 0.5rem 2rem 0.5rem; /* 上下留出足夠間距，左右也稍微留空 */
+		    padding-left: 1.5rem; /* 為了給引號留出空間，只保留左側內距 */
+		    z-index: 1;
+		}
+		
+		/* 巨大引號圖示的樣式不變，它現在是視覺主角 */
+		.golden-sentence::before {
+		    content: '“';
+		    font-family: 'Merriweather', serif;
+		    position: absolute;
+		    /* 調整位置以適應無背景的佈局 */
+		    top: -0.5rem; 
+		    left: -0.5rem;
+		    font-size: 6rem;
+		    font-weight: 700;
+		    color: var(--highlight-accent-color);
+		    opacity: 0.15;
+		    line-height: 1;
+		    z-index: -1;
+		    pointer-events: none;
+		}
+
+        .full-summary-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .full-summary-content.expanded {
+            max-height: 600px; /* A value larger than any possible content height */
+        }
+        
+        .full-summary-content p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .full-summary-content p strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .expand-summary-button {
+            background: none;
+            border: none;
+            color: var(--highlight-accent-color);
+            cursor: pointer;
+            padding: 0.5rem 0 0 0;
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: color 0.2s;
+        }
+        html:not(.dark-mode) .expand-summary-button:hover { color: var(--text-primary-light); }
+        html.dark-mode .expand-summary-button:hover { color: var(--text-primary-dark); }
+
+        .expand-icon {
+            width: 1rem;
+            height: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 640px) {
+            .period-summary { padding: 1rem 1.25rem; }
+            .golden-sentence { font-size: 1.1rem; }
+            .full-summary-content p { font-size: 1rem; }
+        }
+
+        .timeline-period-header h2 {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700;
+            color: var(--text-primary); margin-bottom: 0.25rem; display: block;
+            padding: 0.1em 0.3em;
+            text-shadow: 0px 0px 5px var(--text-shadow-color), 0px 0px 8px var(--text-shadow-color), 0px 0px 2px var(--text-shadow-color);
+        }
+        .timeline-period-header .period-info-button {
+            margin-top: 0.35rem; background-color: transparent; border: none;
+            opacity: 0.8; color: var(--text-secondary); padding: 0.2rem 0.1rem;
+            font-size: 0.85rem; text-shadow: 0px 0px 3px var(--text-shadow-color);
+            cursor: pointer; transition: opacity 0.2s, color 0.2s;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .timeline-period-header .period-info-button:hover { opacity: 1; color: var(--text-primary); }
+        .timeline-period-header .period-info-button .icon {
+            width: 1.1em; height: 1.1em; vertical-align: middle;
+        }
+
+        .period-actions-container {
+            width: 100%; max-width: 800px; margin-top: 2rem; margin-bottom: 1rem;
+            text-align: center; z-index: 2; position: relative;
+        }
+
+        .timeline-message {
+            color: var(--text-secondary);
+            text-shadow: 0 0 5px var(--text-shadow-color);
+            text-align: center;
+            position: relative;
+        }
+        
+        .period-other-events-button, .rocket-stats-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0.35rem;
+            background-color: var(--nav-active-bg);
+            border: 1px solid var(--highlight-accent-color);
+            color: var(--highlight-accent-color);
+            padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 9999px;
+            cursor: pointer; transition: background-color 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+            font-weight: 500;
+        }
+        .rocket-stats-button.chart-loading {
+            cursor: wait;
+            opacity: 0.6;
+        }
+        .rocket-stats-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: transparent;
+            color: var(--text-secondary);
+            border-color: var(--text-secondary);
+        }
+        html:not(.dark-mode) .period-other-events-button:hover,
+        html:not(.dark-mode) .rocket-stats-button:not(.chart-loading):not(:disabled):hover {
+            background-color: var(--highlight-accent-color-light); color: #ffffff;
+            border-color: var(--highlight-accent-color-light);
+        }
+        html.dark-mode .period-other-events-button:hover,
+        html.dark-mode .rocket-stats-button:not(.chart-loading):not(:disabled):hover {
+            background-color: var(--highlight-accent-color-dark); color: #1e293b;
+            border-color: var(--highlight-accent-color-dark);
+        }
+
+        .timeline-peace-interruption .peace-text-block,
+        .timeline-pivotal-interruption .pivotal-text-block {
+            color: var(--text-primary); display: inline-block;
+            padding: 0.3em 0.5em; background-color: transparent;
+            position: relative; /* For tooltip positioning */
+        }
+        .timeline-peace-interruption .peace-text-block .event-year-display,
+        .timeline-peace-interruption .peace-text-block .event-brief-display,
+        .timeline-pivotal-interruption .pivotal-text-block .event-year-display,
+        .timeline-pivotal-interruption .pivotal-text-block .event-brief-display {
+            text-shadow: 0px 0px 5px var(--text-shadow-color), 0px 0px 8px var(--text-shadow-color), 0px 0px 2px var(--text-shadow-color);
+        }
+        .timeline-peace-interruption .peace-text-block .event-name-display,
+        .timeline-pivotal-interruption .pivotal-text-block .event-name-display {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            text-shadow: 0px 0px 5px var(--text-shadow-color), 0px 0px 8px var(--text-shadow-color), 0px 0px 2px var(--text-shadow-color);
+        }
+        .timeline-peace-interruption .peace-text-block .event-year-display {
+            color: var(--peace-accent-color); font-size: 1.25rem;
+        }
+        .timeline-pivotal-interruption .pivotal-text-block .event-year-display {
+            color: var(--pivotal-accent-color); font-size: 1.25rem;
+        }
+        .timeline-peace-interruption .peace-text-block .event-name-display,
+        .timeline-pivotal-interruption .pivotal-text-block .event-name-display {
+            font-size: 1.4rem; font-weight: 600;
+        }
+        .timeline-peace-interruption .peace-text-block .event-brief-display,
+        .timeline-pivotal-interruption .pivotal-text-block .event-brief-display {
+            font-size: 1rem; color: var(--text-secondary);
+        }
+
+        .timeline-entry {
+            position: relative; margin-bottom: 1.5rem; width: 100%; min-height: 95px;
+        }
+        .timeline-event-content {
+            width: calc(50% - var(--timeline-content-offset)); 
+            padding: 0.7rem 0.8rem; position: relative;
+            color: var(--text-primary); z-index: 2;
+            word-wrap: break-word; overflow-wrap: break-word;
+        }
+        .timeline-event-content.event-left { float: left; clear: left; text-align: right; margin-right: calc(50% + var(--timeline-content-offset)); }
+        .timeline-event-content.event-right { float: right; clear: right; text-align: left; margin-left: calc(50% + var(--timeline-content-offset)); }
+
+        .modal-timeline-entry {
+            position: relative; padding-left: 25px; margin-bottom: 1.2rem;
+            list-style: none; text-align: left;
+        }
+        .modal-timeline-entry .timeline-dot {
+            left: 0px; transform: translateX(0%); top: 4px;
+            width: 12px; height: 12px; border-width: 2px;
+        }
+        .modal-timeline-entry .event-year-display {
+            font-size: 1rem; font-weight: 600; display: block; margin-bottom: 0.1rem;
+        }
+        .modal-timeline-entry .event-name-display {
+            font-family: 'Merriweather', 'Noto Sans TC', serif; font-size: 1.15rem; font-weight: 400;
+            margin: 0.1rem 0; word-wrap: break-word; overflow-wrap: break-word;
+        }
+        .modal-timeline-entry .event-brief-display {
+            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.45;
+            display: block; margin-top: 0.1rem; word-wrap: break-word; overflow-wrap: break-word;
+        }
+        .modal-timeline-entry .icon {
+            width: 0.9em; height: 0.9em; vertical-align: -0.1em; margin-right: 0.3em;
+        }
+        .modal-timeline-entry.no-events-message {
+            text-align: center; padding-left: 0; color: var(--text-secondary);
+        }
+        .modal-timeline-entry.no-events-message .timeline-dot { display: none; }
+
+        .timeline-dot {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 18px; height: 18px; border-radius: 50%;
+            border: 3px solid var(--bg-main); z-index: 3;
+        }
+        .timeline-event.actor-palestinian.is-major-conflict .timeline-dot,
+        .modal-timeline-entry.actor-palestinian.is-major-conflict .timeline-dot { background-color: var(--palestinian-major-accent-color); }
+        .timeline-event.actor-palestinian.is-minor-conflict .timeline-dot,
+        .modal-timeline-entry.actor-palestinian.is-minor-conflict .timeline-dot { background-color: var(--palestinian-minor-accent-color); }
+        .timeline-event.actor-israel.is-military .timeline-dot,
+        .modal-timeline-entry.actor-israel.is-military .timeline-dot { background-color: var(--israel-military-accent-color); }
+        .timeline-event.actor-israel.is-nonmilitary .timeline-dot,
+        .modal-timeline-entry.actor-israel.is-nonmilitary .timeline-dot { background-color: var(--israel-nonmilitary-accent-color); }
+
+        .event-year-display { font-size: 1.1rem; font-weight: 600; display: block; }
+        .event-name-display {
+            font-family: 'Merriweather', 'Noto Sans TC', serif; font-size: 1.25rem; font-weight: 400;
+            margin: 0.15rem 0; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;
+        }
+        .timeline-event.actor-palestinian.is-major-conflict .event-name-display,
+        .modal-timeline-entry.actor-palestinian.is-major-conflict .event-name-display { color: var(--palestinian-major-accent-color); }
+        .timeline-event.actor-palestinian.is-minor-conflict .event-name-display,
+        .modal-timeline-entry.actor-palestinian.is-minor-conflict .event-name-display { color: var(--palestinian-minor-accent-color); }
+        .timeline-event.actor-israel.is-military .event-name-display,
+        .modal-timeline-entry.actor-israel.is-military .event-name-display { color: var(--israel-military-accent-color); }
+        .timeline-event.actor-israel.is-nonmilitary .event-name-display,
+        .modal-timeline-entry.actor-israel.is-nonmilitary .event-name-display { color: var(--israel-nonmilitary-accent-color); }
+
+        .event-brief-display {
+            font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5;
+            word-wrap: break-word; overflow-wrap: break-word; white-space: normal;
+        }
+
+        .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; margin-right: 0.3em; }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .site-footer {
+            text-align: center; padding: 2.5rem 1rem; font-size: 0.95rem;
+            color: var(--text-secondary); margin-top: 2rem;
+            background-color: var(--bg-main); border-top: 1px solid var(--timeline-line);
+        }
+
+        .timeline::after { content: ""; display: table; clear: both; }
+
+        .modal {
+            display: none; position: fixed; z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
+            background-color: rgba(0,0,0,0.75);
+        }
+        .modal-content {
+            background-color: var(--modal-bg); color: var(--text-primary);
+            margin: auto; padding: 20px 25px; border-radius: 8px;
+            width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.35); position: relative;
+        }
+        
+        .rocket-chart-canvas-container {
+            width: 100%; height: 350px; margin-top: 1rem; padding: 1rem;
+            border-radius: 8px; background-color: var(--bg-boundary-highlight);
+        }
+        @media (min-width: 640px) { .rocket-chart-canvas-container { height: 450px; } }
+
+        .close-button {
+            color: var(--text-secondary); position: absolute; top: 10px; right: 15px;
+            font-size: 26px; font-weight: bold; background: none; border: none;
+            padding: 0; line-height: 1; cursor: pointer;
+        }
+        .close-button:hover { color: var(--text-primary); }
+
+        .modal-title {
+            font-family: 'Merriweather', 'Noto Sans TC', serif; font-size: 1.5rem;
+            margin-bottom: 1rem; color: var(--highlight-accent-color); text-align: center;
+        }
+        .modal-body p { font-size: 1rem; margin-bottom: 0.7rem; line-height: 1.6; }
+        .modal-body ul { padding-left: 0; list-style: none; }
+        .modal-body ul li.no-events-message p {
+            text-align: center; color: var(--text-secondary); padding: 1rem 0;
+        }
+        .modal-body .loading-indicator {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Tooltip Styles */
+        .event-tooltip {
+            position: absolute;
+            background-color: var(--tooltip-bg);
+            color: var(--tooltip-text);
+            border: 1px solid var(--tooltip-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 320px;
+            max-width: 90vw;
+            z-index: 1010;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+            pointer-events: none;
+        }
+        .event-tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .event-tooltip p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .event-tooltip h4 {
+            font-family: 'Merriweather', 'Noto Sans TC', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--highlight-accent-color);
+        }
+        .has-tooltip { cursor: pointer; }
+
+
+        @media (max-width: 640px) {
+            .site-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+            .site-hero p { font-size: clamp(1rem, 2vw, 1.3rem); }
+            .period-navigation { padding: 0.5rem 0; }
+            .period-navigation button { padding: 0.5rem 0.8rem; font-size: 0.85rem; margin: 0 0.1rem; }
+            .timeline::before {
+                left: var(--timeline-mobile-offset);
+                transform: translateX(-50%);
+                margin-left: 0;
+                -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 20px), transparent 100%);
+                mask-image: linear-gradient(to bottom, black calc(100% - 20px), transparent 100%);
+            }
+            .timeline-interruption::before, .timeline-interruption::after {
+                left: var(--timeline-mobile-offset);
+                transform: translateX(-50%);
+                margin-left: 0;
+            }
+            .timeline-dot {
+                left: var(--timeline-mobile-offset);
+                transform: translateX(-50%);
+            }
+            .timeline-event-content,
+            .timeline .timeline-entry .timeline-event-content.event-left,
+            .timeline .timeline-entry .timeline-event-content.event-right {
+                width: auto; float: none; clear: both;
+                margin-left: calc(var(--timeline-mobile-offset) + var(--timeline-content-offset));
+                margin-right: 0;
+                text-align: left; padding: 0.5rem 0.6rem;
+            }
+            .event-name-display, .event-brief-display { word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
+            .period-year-overlay { font-size: clamp(3.5rem, 10vw, 8rem); }
+            
+            .timeline-peace-interruption,
+            .timeline-pivotal-interruption {
+                text-align: left;
+            }
+            .timeline-peace-interruption .peace-text-block,
+            .timeline-pivotal-interruption .pivotal-text-block {
+                text-align: left; 
+                margin-left: 10px;
+                margin-right: 10px;
+                padding: 0.5em;
+                text-shadow: none;
+            }
+            .timeline-peace-interruption .peace-text-block .event-year-display,
+            .timeline-peace-interruption .peace-text-block .event-name-display,
+            .timeline-peace-interruption .peace-text-block .event-brief-display,
+            .timeline-pivotal-interruption .pivotal-text-block .event-year-display,
+            .timeline-pivotal-interruption .pivotal-text-block .event-name-display,
+            .timeline-pivotal-interruption .pivotal-text-block .event-brief-display { text-shadow: none; }
+
+            .rocket-chart-canvas-container { height: 300px; }
+        }
+		.footer-theme-selector {
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    margin-bottom: 1.5rem;
+		    font-size: 0.9rem; /* 稍微調整整體字體大小 */
+		}
+		.footer-theme-button {
+		    /* 移除所有按鈕樣式，讓它看起來像文字 */
+		    background-color: transparent;
+		    border: none;
+		    padding: 0;
+		    margin: 0;
+		
+		    color: var(--text-secondary); /* 預設文字顏色 */
+		    cursor: pointer;
+		    transition: color 0.2s;
+		}
+		.footer-theme-button:hover {
+		    color: var(--text-primary); /* 滑鼠移上去的顏色 */
+		}
+		.footer-theme-button.active {
+		    color: var(--text-primary); /* 當前選中模式的顏色 */
+		    font-weight: 700; /* 讓選中的模式變粗體 */
+		}
+		
+		/* 這個是加上「|」分隔線的魔法 */
+		.footer-theme-button + .footer-theme-button::before {
+		    content: '|';
+		    margin: 0 0.8rem; /* 分隔線與兩邊文字的距離 */
+		    color: var(--timeline-line); /* 分隔線的顏色 */
+		    pointer-events: none; /* 讓分隔線本身不能被點擊 */
+		}
+		/* 高亮效果的樣式 */
+		.highlight-active {
+		    position: relative; /* 讓 z-index 生效的關鍵 */
+		    z-index: 991;      /* 設定一個較高的層級，確保它在變暗圖層之上 */
+			isolation: isolate;
+			background-color: var(--bg-main);
+		    box-shadow: 0 0 16px 6px gold, 0 0 0 2px gold;
+		    border-radius: 8px !important;
+	    transform: scale(1.03);
+			    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+		}
+		/* 當高亮啟動時，在 body::before 創造一個變暗圖層 */
+		body.highlight-overlay-active::before {
+		    content: '';
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100vw;
+		    height: 100vh;
+		    background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+		    z-index: 990; /* 層級要比高亮元素低，比一般內容高 */
+		    pointer-events: auto; /* 允許點擊這個圖層 */
+		}
+
+		/* FAB 容器 */
+		/* 修改 FAB 容器，為顯示/隱藏增加過渡動畫 */
+		.fab-container {
+		    position: fixed;
+		    bottom: 1.5rem;
+		    right: 1.5rem;
+		    z-index: 1001;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    /* 新增 transition 屬性 */
+		    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+		}
+		
+		/* 定義 FAB 隱藏時的狀態 */
+		.fab-container.fab-hidden {
+		    opacity: 0;
+		    transform: scale(0.5); /* 縮小並淡出 */
+		    pointer-events: none; /* 隱藏時不可點擊 */
+		}
+		
+		/* 通用按鈕樣式 */
+		.fab-button {
+		    width: 56px;
+		    height: 56px;
+		    border-radius: 50%;
+		    border: none;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+		    cursor: pointer;
+		    transition: transform 0.2s ease, background-color 0.2s ease;
+		}
+		.fab-button:hover {
+		    transform: scale(1.08);
+		}
+
+		/* 主按鈕 */
+		.fab-main-button {
+		    background-color: var(--nav-bg); /* 使用和導覽列相同的背景色，能自動適應深淺模式 */
+		    border: 1px solid var(--timeline-line); /* 加上一點邊框，避免和背景融為一體 */
+		    position: relative;
+		    z-index: 10;
+		    transform: rotate(0deg);
+		    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.4s ease;
+		}
+		
+		/* 調整主按鈕裡圖示的顏色 */
+		.fab-main-button svg {
+		    width: 24px;  /* 稍微縮小一點圖示 */
+		    height: 24px;
+		    color: var(--text-secondary); /* 使用次要文字顏色，更柔和 */
+		    transition: color 0.2s;
+		}
+		
+		/* 滑鼠移到主按鈕上時，圖示顏色變深 */
+		.fab-main-button:hover svg {
+		    color: var(--text-primary);
+		}
+
+		/* 子按鈕選項 */
+		.fab-actions {
+		    position: absolute;
+		    bottom: 0;
+		    right: 0;
+		}
+		.fab-action {
+		    position: absolute;
+		    bottom: 4px;
+		    right: 4px;
+		    display: flex;
+		    align-items: center;
+		    gap: 1rem;
+		    opacity: 0;
+		    transform: translateY(0);
+		    transition: transform 0.3s ease, opacity 0.3s ease;
+		    pointer-events: none;
+		}
+		.fab-button-child {
+		    width: 48px;
+		    height: 48px;
+		    background-color: var(--text-secondary);
+		}
+		.fab-button-child svg {
+		    width: 24px;
+		    height: 24px;
+		}
+		.fab-label {
+		    background-color: rgba(0,0,0,0.7);
+		    color: white;
+		    padding: 0.3rem 0.7rem;
+		    border-radius: 4px;
+		    font-size: 0.9rem;
+		    white-space: nowrap;
+		}
+		
+		/* 當主按鈕被點擊 (容器有 .active class) */
+
+		/* --- 這是最終的圖示切換樣式，使用透明度和縮放 --- */
+		
+		/* 讓兩個圖示疊在一起，並設定過渡動畫 */
+		.fab-main-button .icon-plus,
+		.fab-main-button .icon-close {
+		    position: absolute; /* 關鍵：讓它們疊在同一個位置，才能平滑切換 */
+		    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+		}
+		
+		/* 預設狀態：「+」可見，「X」透明且縮小 */
+		.fab-main-button .icon-plus {
+		    opacity: 1;
+		    transform: scale(1) rotate(0deg);
+		}
+		.fab-main-button .icon-close {
+		    opacity: 0;
+		    transform: scale(0);
+		}
+		
+		/* 選單展開時 (active)：主按鈕照常旋轉 */
+		.fab-container.active .fab-main-button {
+		    transform: rotate(135deg);
+		}
+		
+		/* 「+」變透明且縮小，同時反向旋轉以抵銷父層的旋轉 */
+		.fab-container.active .fab-main-button .icon-plus {
+		    opacity: 0;
+		    transform: scale(0) rotate(-135deg);
+		}
+		
+		/* 「X」變可見且恢復正常大小，同時反向旋轉以抵銷父層的旋轉，讓「X」保持水平 */
+		.fab-container.active .fab-main-button .icon-close {
+		    opacity: 1;
+		    transform: scale(1) rotate(-135deg);
+		}
+
+		.fab-container.active .fab-action {
+		    opacity: 1;
+		    pointer-events: auto;
+		}
+		/* 「派對伸縮管」動畫 */
+		.fab-container.active .fab-action:nth-child(1) { transform: translateY(-65px); transition-delay: 0.20s; }
+		.fab-container.active .fab-action:nth-child(2) { transform: translateY(-125px); transition-delay: 0.15s; }
+		.fab-container.active .fab-action:nth-child(3) { transform: translateY(-185px); transition-delay: 0.10s; }
+		.fab-container.active .fab-action:nth-child(4) { transform: translateY(-245px); transition-delay: 0.05s; }
+		.fab-container.active .fab-action:nth-child(5) { transform: translateY(-305px); transition-delay: 0.0s; }
+		/* 用於攔截點擊的透明幕布 */
+		#menu-overlay {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: transparent; /* 完全透明 */
+		    z-index: 1000; /* 層級要高於頁面內容，但低於 FAB 選單和頂部導覽列 */
+		    display: none; /* 預設隱藏 */
+		}
+		#menu-overlay.visible {
+		    display: block; /* 需要時顯示 */
+		}
+
+		/* --- 針對淺色模式高亮時，將FAB按鈕變暗的修正樣式 --- */
+		html:not(.dark-mode) body.highlight-overlay-active .fab-container:not(.active) {
+		    /* 稍微降低整個FAB按鈕區塊的透明度，讓它融入變暗的背景 */
+		    opacity: 0.35;
+		    /* 增加一個平滑的過渡動畫，讓變暗的效果不那麼突兀 */
+		    transition: opacity 0.3s ease-in-out;
+		}
+		
+		.timeline-entry::after {
+		    content: "";
+		    display: table;
+		    clear: both;
+		}
+		
+		#langToggleButton:hover,
+		#langToggleButton:active {
+		    color: var(--splash-text-primary); /* 使用 Splash Screen 的主要文字顏色作為強調色 */
+		}
+		
+		#langToggleButton:focus {
+		    color: var(--splash-text-secondary); /* 點擊後(聚焦時)，恢復成次要文字顏色 */
+		    outline: none;  /* 同時移除點擊後可能出現的藍色輪廓線 */
+		}
+		
+		/* 針對「第二次起義」時期，手動將年份往下移動，避免被遮擋 */
+		#second_intifada_gaza_disengagement .period-year-overlay {
+		    top: 108.5rem;
+		}
+
+        /* --- 全站通用的進場動畫 --- */
+        @keyframes slide-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-load {
+            opacity: 0; /* 動畫開始前預設透明 */
+        }
+
+        .animate-on-load.start-animation {
+            animation: slide-in-up 0.8s ease-out forwards;
+        }
+
+        /* --- 為不同區塊的元素設定動畫延遲 --- */
+
+        /* Splash Screen */
+        #splashTitleText.start-animation { animation-delay: 0.2s; }
+        #splashSubtitleText.start-animation { animation-delay: 0.4s; }
+        #langToggleButton.start-animation { animation-delay: 0.2s; }
+
+        /* Hero Section - Page 1 */
+        #heroTitle.start-animation { animation-delay: 0.2s; }
+        #heroSubtitle.start-animation { animation-delay: 0.4s; }
+        #showPrologueButton.start-animation {
+            animation: slide-in-up 0.8s ease-out forwards 0.6s, 
+                    bounce-arrow 2.5s infinite ease-in-out 1.4s; /* 進場動畫結束後再開始彈跳 */
+        }
+
+        /* Hero Section - Page 2 (Prologue) */
+        #prologueTitle.start-animation { animation-delay: 0.2s; }
+        #prologueText.start-animation { animation-delay: 0.4s; }
+        #startTimelineButton.start-animation {
+            animation: slide-in-up 0.8s ease-out forwards 0.6s, 
+                    pulse-button-scale 2.5s infinite ease-in-out 1.4s; /* 進場動畫結束後再開始跳動 */
+        }
+
+        /* --- Splash Screen Button Styles (Final Version) --- */
+
+        /* 1. 定義脈搏跳動動畫效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(161, 161, 170, 0.1); }
+            50% { transform: scale(1.03); box-shadow: 0 0 0 12px rgba(161, 161, 170, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(161, 161, 170, 0); }
+        }
+
+        /* 2. 設定按鈕的原始外觀 (透明背景 + 邊框) */
+        .splash-content .click-to-enter {
+            font-family: 'Noto Sans TC', 'Open Sans', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--splash-text-secondary);
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            border: 1px solid var(--splash-cta-border);
+            border-radius: 8px;
+            background-color: transparent;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+            opacity: 0; /* 確保按鈕在動畫前是透明的，防止閃爍 */
+        }
+
+        /* 3. 設定原始的滑鼠懸停效果 */
+        .splash-content .click-to-enter:hover {
+            background-color: rgba(255,255,255,0.07);
+            opacity: 1;
+        }
+
+        /* 4. 設定組合動畫 (滑入 + 脈搏) */
+        .click-to-enter.start-animation {
+            animation: slide-in-up 0.8s ease-out forwards 0.6s,
+                    pulse 2.5s infinite ease-in-out 1.4s;
+        }
