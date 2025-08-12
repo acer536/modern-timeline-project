@@ -11,11 +11,11 @@
     "copy:assets": "copyfiles \"images/**/*\" dist",
     "build": "npm run build:css && npm run build:js && npm run build:html && npm run copy:assets",
     "dev:css": "tailwindcss -i ./src/styles.css -o ./dist/output.css --watch",
-    "dev:js": "terser ./src/script.js -o ./dist/script.js --watch",
-    "dev:html": "html-minifier-terser ./index.html -o ./dist/index.html --remove-comments --collapse-whitespace --watch",
+    "dev:js": "onchange ./src/script.js -- terser ./src/script.js -o ./dist/script.js",    
+    "dev:html": "onchange ./index.html -- html-minifier-terser ./index.html -o ./dist/index.html --remove-comments --collapse-whitespace",    
     "copy:assets:watch": "copyfiles -w \"images/**/*\" dist",
     "dev": "concurrently \"npm:dev:*\" \"npm:copy:assets:watch\""
-  },  
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "concurrently": "^9.2.0",
     "copyfiles": "^2.4.1",
     "html-minifier-terser": "^7.2.0",
+    "onchange": "^7.1.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
     "terser": "^5.43.1"
