@@ -1,3 +1,16 @@
+(function detectDeviceOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const body = document.body;
+
+    if (/android/i.test(userAgent)) {
+        body.classList.add("is-android");
+    }
+
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        body.classList.add("is-ios");
+    }
+})();
+
 const timelineData = {
       "events": [
         { "id": "event_1920_nebi_musa", "year": 1920, "sortDate": "1920-04-04", "eventName": {"zh": "Nebi Musa耶路撒冷舊城襲擊", "en": "Nebi Musa Riots, Old City of Jerusalem"}, "briefDescription": {"zh": "持械襲擊，5死", "en": "Armed assault, 5 dead"}, "periodId": "mandate_early_conflicts", "isPeace": false, "iconType": "conflict", "isMajorConflict": true, "actor": "palestinian" },

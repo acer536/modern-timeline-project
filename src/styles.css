@@ -8,20 +8,22 @@
     background-image: url('/images/preview.jpg');
     background-size: cover;
     background-position: center center;
-    background-attachment: fixed; /* 讓背景在滾動時有視差效果 */
+    /* 預設為 scroll，給 iOS 和其他裝置使用 */
+    background-attachment: scroll; 
 }
 
-/* 针对iOS设备的兼容性修复 */
-@supports (-webkit-overflow-scrolling: touch) {
+/* 2. 在桌面電腦 或 Android 裝置上啟用視差效果 */
+@media (hover: hover) and (pointer: fine) {
     .site-hero {
-        background-attachment: scroll !important; /* 替换为scroll */
-        /* 可选：如果需要保留类似视差效果，可添加以下代码 */
-        background-attachment: local;
-        -webkit-background-attachment: local;
+        background-attachment: fixed;
     }
 }
 
-/* 2. 在背景圖片上加上一層固定的、效果最好的深色遮罩 */
+body.is-android .site-hero {
+    background-attachment: fixed;
+}
+
+/* 3. 在背景圖片上加上一層固定的、效果最好的深色遮罩 */
 .site-hero::before {
     content: '';
     position: absolute;
