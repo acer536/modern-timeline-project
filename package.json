@@ -3,18 +3,8 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind:init": "tailwindcss init -p",
-    "build:css": "tailwindcss -i ./src/styles.css -o ./dist/output.css --minify",
-    "build:js": "terser ./src/script.js -o ./dist/script.js -c -m",
-    "build:html": "html-minifier-terser ./index.html -o ./dist/index.html --remove-comments --collapse-whitespace",
-    "copy:assets": "copyfiles \"images/**/*\" dist",
-    "build": "npm run build:css && npm run build:js && npm run build:html && npm run copy:assets",
-    "dev:css": "tailwindcss -i ./src/styles.css -o ./dist/output.css --watch",
-    "dev:js": "onchange ./src/script.js -- terser ./src/script.js -o ./dist/script.js",    
-    "dev:html": "onchange ./index.html -- html-minifier-terser ./index.html -o ./dist/index.html --remove-comments --collapse-whitespace",    
-    "copy:assets:watch": "copyfiles -w \"images/**/*\" dist",
-    "dev": "concurrently \"npm:dev:*\" \"npm:copy:assets:watch\""
+    "dev": "vite",
+    "build": "vite build"
   },
   "keywords": [],
   "author": "",
@@ -22,12 +12,8 @@
   "description": "",
   "devDependencies": {
     "autoprefixer": "^10.4.19",
-    "concurrently": "^9.2.0",
-    "copyfiles": "^2.4.1",
-    "html-minifier-terser": "^7.2.0",
-    "onchange": "^7.1.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
-    "terser": "^5.43.1"
+    "vite": "^7.1.2"
   }
 }

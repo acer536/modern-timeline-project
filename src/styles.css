@@ -5,7 +5,7 @@
 /* 1. 為 #siteHero 區塊設定背景圖片與基礎定位 */
 .site-hero {
     position: relative;
-    background-image: url('../images/preview.jpg');
+    background-image: url('/images/preview.jpg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed; /* 讓背景在滾動時有視差效果 */
@@ -1365,7 +1365,7 @@
 		
 		/* 針對「第二次起義」時期，手動將年份往下移動，避免被遮擋 */
 		#second_intifada_gaza_disengagement .period-year-overlay {
-		    top: 108.5rem;
+		    top: 103.25rem;
 		}
 
         /* --- 全站通用的進場動畫 --- */
@@ -1446,4 +1446,9 @@
         .click-to-enter.start-animation {
             animation: slide-in-up 0.8s ease-out forwards 0.6s,
                     pulse 2.5s infinite ease-in-out 1.4s;
+        }
+
+        /* --- 動畫修正：確保 Hero 區塊內的動畫元素初始為透明 --- */
+        .site-hero .animate-on-load {
+            opacity: 0;
         }
