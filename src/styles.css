@@ -11,6 +11,16 @@
     background-attachment: fixed; /* 讓背景在滾動時有視差效果 */
 }
 
+/* 针对iOS设备的兼容性修复 */
+@supports (-webkit-overflow-scrolling: touch) {
+    .site-hero {
+        background-attachment: scroll !important; /* 替换为scroll */
+        /* 可选：如果需要保留类似视差效果，可添加以下代码 */
+        background-attachment: local;
+        -webkit-background-attachment: local;
+    }
+}
+
 /* 2. 在背景圖片上加上一層固定的、效果最好的深色遮罩 */
 .site-hero::before {
     content: '';
