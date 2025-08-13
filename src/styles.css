@@ -1108,7 +1108,7 @@
             .timeline-peace-interruption .peace-text-block,
             .timeline-pivotal-interruption .pivotal-text-block {
                 text-align: left; 
-                margin-left: 10px;
+                margin-left: var(--timeline-mobile-offset);
                 margin-right: 10px;
                 padding: 0.5em;
                 text-shadow: none;
