@@ -4,7 +4,7 @@
 
 This is an interactive timeline website aimed at exploring the major conflicts, attacks, peace processes, and key turning points between Palestine and Israel over the past century.
 
-[![Project Preview](images/preview.jpg)](https://roots-of-conflict.netlify.app/)
+[![Project Preview](public/images/preview.jpg)](https://roots-of-conflict.netlify.app/)
 
 ---
 
