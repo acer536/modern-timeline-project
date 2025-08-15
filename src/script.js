@@ -782,6 +782,8 @@ function loadAndSortData() {
             initializeTooltips();
             setupIntersectionObserver();
 
+            setupTimelineEntryAnimations();
+
             // 設定一個初始的 active 按鈕，避免畫面一片空白
             const firstSection = document.querySelector('.period-section');
             if (firstSection) {
@@ -1982,6 +1984,8 @@ function loadAndSortData() {
             
             // 保留：這是您原有的、用來控制頂部導覽列的偵測器
             setupIntersectionObserver();
+
+            setupTimelineEntryAnimations();
             
             // 保留：這是您原有的、用來啟動 Splash Screen 的程式碼
             if (domElements.SPLASH_SCREEN && !domElements.SPLASH_SCREEN.classList.contains(CSS_CLASSES.HIDDEN)) {
@@ -1993,5 +1997,24 @@ function loadAndSortData() {
         }        
 
         document.addEventListener('DOMContentLoaded', initializePage);
+
+        function setupTimelineEntryAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // 當動畫觸發後，可以選擇停止觀察以提升效能
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1, // 元素出現 10% 就觸發
+                rootMargin: "0px 0px -50px 0px" // 稍微延遲觸發，避免太敏感
+            });
+
+            document.querySelectorAll('.timeline-entry').forEach(el => {
+                observer.observe(el);
+            });
+        }
 
     })();
