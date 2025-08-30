@@ -1,3 +1,9 @@
+// src/script.js
+
+// 新增：從我們建立的新檔案中引入資料和功能
+import { eventDetails } from './timeline-details.js';
+import { showEventPopup } from './event-popup.js';
+
 (function detectDeviceOS() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     const body = document.body;
@@ -191,7 +197,6 @@ const timelineData = {
       ]
 };
 
-    (function() {
         'use strict';
 
         // --- 全域常數與設定 ---
@@ -2017,4 +2022,26 @@ function loadAndSortData() {
             });
         }
 
-    })();
+        // 新增：監聽時間軸事件的點擊，以觸發彈出式視窗
+    const CONTENT_BODY = document.getElementById('contentBody');
+    if (CONTENT_BODY) {
+        CONTENT_BODY.addEventListener('click', (e) => {
+            // 找到被點擊的事件卡片元素
+            const eventElement = e.target.closest('.timeline-event-content');
+            if (!eventElement) return; // 如果點的不是事件卡片，就什麼都不做
+
+            const eventId = eventElement.getAttribute('data-event-id');
+            const details = eventDetails[eventId];
+            const eventData = timelineData.events.find(evt => evt.id === eventId);
+
+            // 檢查這個事件是否有詳細資料可以顯示
+            if (details && eventData) {
+                // 判斷卡片在左邊還是右邊，決定彈出視窗方向
+                const isLeft = eventElement.classList.contains('event-left');
+                const direction = isLeft ? 'left' : 'right';
+
+                // 呼叫我們在 event-popup.js 中建立的函式
+                showEventPopup(eventData, details, currentLang, direction);
+            }
+        });
+    }
