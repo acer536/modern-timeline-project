@@ -1578,12 +1578,13 @@ body.is-android .site-hero {
         .event-popup-image {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 確保圖片填滿容器且不變形 */
+            object-fit: contain; /* 修改：確保圖片完整顯示 */
             transition: transform 0.3s ease-out;
         }
-        .event-popup-container:hover .event-popup-image {
+        /* 修改：只有當滑鼠在圖片區塊上時才放大圖片 */
+        .event-popup-image-wrapper:hover .event-popup-image {
             transform: scale(1.05);
-        }
+        }        
 
         .event-popup-content {
             padding: 1.5rem;
@@ -1594,13 +1595,13 @@ body.is-android .site-hero {
         .event-popup-caption {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-top: -1rem;
-            padding: 0 1.5rem 1rem;
+            margin-top: 0; /* 修改：移除負邊界 */
+            padding: 0.75rem 1.5rem; /* 修改：調整上下內距 */
             text-align: center;
             font-style: italic;
             border-bottom: 1px solid var(--timeline-line);
             flex-shrink: 0;
-        }
+        }        
 
         .event-popup-title {
             font-family: 'Merriweather', 'Noto Sans TC', serif;
@@ -1665,4 +1666,103 @@ body.is-android .site-hero {
             .event-popup-image-wrapper {
                 height: 200px; /* 手機版圖片高度 */
             }
+        }
+
+        /* --- 新增：圖片燈箱 (Lightbox) 樣式 --- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 2000; /* 確保在最上層 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+
+        .lightbox-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            color: #fff;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .lightbox-close-button:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .lightbox-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 1rem 0.75rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+        .lightbox-nav-button:hover {
+            opacity: 1;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .lightbox-nav-button.prev {
+            left: 1rem;
+        }
+        .lightbox-nav-button.next {
+            right: 1rem;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
         }

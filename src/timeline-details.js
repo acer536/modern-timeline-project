@@ -6,7 +6,7 @@
 export const eventDetails = {
   // 範例 1：大衛王酒店爆炸案
   'event_1946_king_david': {
-    imageUrl: './images/king_david_hotel_bombing.jpg',
+    imageUrl: ['./images/king_david_hotel_bombing.jpg'],
     imageCaption: {
       zh: '爆炸後的大衛王酒店南翼。',
       en: 'The southern wing of the King David Hotel after the bombing.'
@@ -23,7 +23,10 @@ export const eventDetails = {
   },
   // 範例 2：海岸公路大屠殺
   'event_1978_coastal_road': {
-    imageUrl: './images/coastal_road_massacre_bus.jpg',
+    imageUrl: [
+      './images/coastal_road_massacre_bus.jpg',
+      './images/coastal_road_massacre_bus_2.jpg'
+    ],
     imageCaption: {
       zh: '被劫持並燒毀的巴士殘骸。',
       en: 'The wreckage of the hijacked and burnt-out bus.'

@@ -3,6 +3,7 @@
 // 新增：從我們建立的新檔案中引入資料和功能
 import { eventDetails } from './timeline-details.js';
 import { showEventPopup } from './event-popup.js';
+import { openLightbox } from './lightbox.js';
 
 (function detectDeviceOS() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -1467,24 +1468,25 @@ function loadAndSortData() {
 		        }
 		    });
 		
-		    // 頁面點擊導航邏輯 (使用捕獲模式優先處理)
-		    document.addEventListener('click', (e) => {
-		        // 此監聽器只在高亮啟用且選單關閉時運作
-		        if (!document.body.classList.contains('highlight-overlay-active') || fabContainer.classList.contains('active')) {
-		            return;
-		        }
-		
-		        const target = e.target;
-		
-				if (target.closest('#eventTooltip')) {
-		            return;
-		        }
-		
-		        // 點擊 FAB 或導覽列時，不執行導航
-		        if (target.closest('.fab-container') || target.closest('#periodNav')) {
-		            return;
-		        }
-		
+            // 頁面點擊導航邏輯 (使用捕獲模式優先處理)
+            document.addEventListener('click', (e) => {
+                // 此監聽器只在高亮啟用且選單關閉時運作
+                if (!document.body.classList.contains('highlight-overlay-active') || fabContainer.classList.contains('active')) {
+                    return;
+                }
+
+                const target = e.target;
+
+                // 如果點擊的目標是來自彈出視窗、燈箱、或提示框的任何地方，就直接停止，不執行導航
+                if (target.closest('#eventPopupOverlay') || target.closest('#lightboxOverlay') || target.closest('#eventTooltip')) {
+                    return;
+                }
+
+                // 點擊 FAB 或導覽列時，不執行導航
+                if (target.closest('.fab-container') || target.closest('#periodNav')) {
+                    return;
+                }
+
 		        const highlightedElements = Array.from(document.querySelectorAll('.highlight-active'));
 		        if (highlightedElements.length === 0) return;
 		
