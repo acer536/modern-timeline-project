@@ -1,15 +1,48 @@
 // src/event-popup.js
 
-// 新增：引入我們建立的燈箱功能
 import { openLightbox } from './lightbox.js';
 
-// 取得 HTML 元素
+// DOM 元素快取
 const popupOverlay = document.getElementById('eventPopupOverlay');
 const popupContainer = document.getElementById('eventPopupContainer');
-let currentCloseButton = null;
-let currentImageWrapper = null; // 用來存放圖片區塊的參考
 
-// 關閉彈出式視窗的函式
+// 狀態變數
+let currentCloseButton = null;
+let currentImageWrapper = null;
+let currentPopupPrevBtn = null;
+let currentPopupNextBtn = null;
+let popupImages = [];
+let currentPopupIndex = 0;
+
+// --- 內部圖片切換邏輯 ---
+function showImageInPopup(index) {
+    if (index < 0 || index >= popupImages.length) return;
+
+    currentPopupIndex = index;
+    const imgElement = popupContainer.querySelector('.event-popup-image');
+    if (imgElement) {
+        imgElement.src = popupImages[currentPopupIndex];
+    }
+
+    // 更新按鈕的可見性
+    if (currentPopupPrevBtn && currentPopupNextBtn) {
+        currentPopupPrevBtn.style.display = (currentPopupIndex === 0) ? 'none' : 'flex';
+        currentPopupNextBtn.style.display = (currentPopupIndex === popupImages.length - 1) ? 'none' : 'flex';
+    }
+}
+
+function showNextInPopup(e) {
+    e.stopPropagation(); // 防止觸發燈箱
+    showImageInPopup(currentPopupIndex + 1);
+}
+
+function showPrevInPopup(e) {
+    e.stopPropagation(); // 防止觸發燈箱
+    showImageInPopup(currentPopupIndex - 1);
+}
+
+
+// --- 燈箱與彈出視窗控制 ---
 function closePopup() {
     if (!popupOverlay || !popupContainer) return;
 
@@ -20,36 +53,35 @@ function closePopup() {
     const direction = popupContainer.dataset.direction || 'right';
     popupContainer.classList.remove(`from-${direction}`);
 
-    // 清空內容並移除事件監聽
+    // 清空內容並移除所有事件監聽
     setTimeout(() => {
         popupContainer.innerHTML = '';
-        if (currentCloseButton) {
-            currentCloseButton.removeEventListener('click', closePopup);
-            currentCloseButton = null;
-        }
-        // 移除圖片點擊事件
-        if (currentImageWrapper) {
-            currentImageWrapper.removeEventListener('click', handleImageClick);
-            currentImageWrapper = null;
-        }
+        // 清理舊的事件監聽器
+        currentCloseButton?.removeEventListener('click', closePopup);
+        currentImageWrapper?.removeEventListener('click', handleImageClick);
+        currentPopupPrevBtn?.removeEventListener('click', showPrevInPopup);
+        currentPopupNextBtn?.removeEventListener('click', showNextInPopup);
+        // 重置所有變數
+        currentCloseButton = null;
+        currentImageWrapper = null;
+        currentPopupPrevBtn = null;
+        currentPopupNextBtn = null;
+        popupImages = [];
+        currentPopupIndex = 0;
     }, 400); 
 }
 
-// 新增：處理圖片點擊的函式
 function handleImageClick(e) {
-    // 從 DOM 元素的 data-* 屬性中讀取圖片列表
-    const images = JSON.parse(e.currentTarget.dataset.images);
-    openLightbox(images);
+    openLightbox(popupImages, currentPopupIndex);
 }
 
-// 監聽鍵盤 Esc 事件
 function handleKeyDown(e) {
     if (e.key === 'Escape') {
         closePopup();
     }
 }
 
-// 顯示彈出式視窗的函式
+// --- 主要匯出函式 ---
 export function showEventPopup(event, details, currentLang, direction = 'right') {
     if (!popupOverlay || !popupContainer) return;
 
@@ -58,16 +90,21 @@ export function showEventPopup(event, details, currentLang, direction = 'right')
     const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
     const eventName = event.eventName[currentLang] || event.eventName['en'];
 
-    // 檢查 imageUrl 是否存在且為一個包含內容的陣列
     const hasImages = details.imageUrl && Array.isArray(details.imageUrl) && details.imageUrl.length > 0;
-    const imageCount = hasImages ? details.imageUrl.length : 0;
+    if (hasImages) {
+        popupImages = details.imageUrl;
+        currentPopupIndex = 0;
+    }
 
     popupContainer.innerHTML = `
         <button id="eventPopupCloseButton" class="event-popup-close-button" aria-label="Close details">&times;</button>
         ${hasImages ? `
-            <div id="popupImageWrapper" class="event-popup-image-wrapper" style="cursor: pointer;" data-images='${JSON.stringify(details.imageUrl)}'>
-                <img src="${details.imageUrl[0]}" alt="${imageCaption}" class="event-popup-image">
-                ${imageCount > 1 ? `<div class="lightbox-counter">${'1 / ' + imageCount}</div>` : ''}
+            <div id="popupImageWrapper" class="event-popup-image-wrapper" style="cursor: pointer;">
+                <img src="${popupImages[0]}" alt="${imageCaption}" class="event-popup-image">
+                ${popupImages.length > 1 ? `
+                    <button class="popup-image-nav-button prev" aria-label="Previous image" style="display: none;">&#10094;</button>
+                    <button class="popup-image-nav-button next" aria-label="Next image">&#10095;</button>
+                ` : ''}
             </div>
         ` : ''}
         ${imageCaption ? `<div class="event-popup-caption">${imageCaption}</div>` : ''}
@@ -92,11 +129,19 @@ export function showEventPopup(event, details, currentLang, direction = 'right')
         currentCloseButton.addEventListener('click', closePopup);
     }
 
-    // 綁定圖片點擊事件
     if (hasImages) {
         currentImageWrapper = document.getElementById('popupImageWrapper');
+        currentPopupPrevBtn = popupContainer.querySelector('.popup-image-nav-button.prev');
+        currentPopupNextBtn = popupContainer.querySelector('.popup-image-nav-button.next');
+
         if (currentImageWrapper) {
             currentImageWrapper.addEventListener('click', handleImageClick);
+        }
+        if (currentPopupPrevBtn) {
+            currentPopupPrevBtn.addEventListener('click', showPrevInPopup);
+        }
+        if (currentPopupNextBtn) {
+            currentPopupNextBtn.addEventListener('click', showNextInPopup);
         }
     }
 

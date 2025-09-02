@@ -1766,3 +1766,47 @@ body.is-android .site-hero {
             border-radius: 12px;
             font-size: 0.9rem;
         }
+
+        /* --- 新增：彈出視窗內部圖片切換按鈕樣式 --- */
+        .popup-image-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            font-size: 1.5rem; /* 尺寸比燈箱的按鈕小一點 */
+            cursor: pointer;
+            padding: 0.75rem 0.5rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; /* 預設為透明 */
+            pointer-events: none; /* 預設不可點擊 */
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        /* 滑鼠移到圖片區塊上時，才顯示按鈕 */
+        .event-popup-image-wrapper:hover .popup-image-nav-button {
+            opacity: 0.8;
+            pointer-events: auto;
+        }
+
+        .popup-image-nav-button:hover {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .popup-image-nav-button.prev {
+            left: 0.5rem;
+        }
+
+        .popup-image-nav-button.next {
+            right: 0.5rem;
+        }
+
+        /* 讓圖片下方的計數器消失 */
+        .event-popup-image-wrapper .lightbox-counter {
+            display: none;
+        }
