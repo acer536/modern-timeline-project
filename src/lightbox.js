@@ -12,6 +12,7 @@ let lightboxCaption = null;
 // --- 狀態變數 ---
 let images = [];
 let captions = [];
+let currentLanguage = 'en';
 let currentIndex = 0;
 let touchStartX = 0;
 let touchEndX = 0;
@@ -90,8 +91,8 @@ function showImage(index) {
 
     // 處理圖片說明
     const captionData = captions[currentIndex];
-    const captionText = captionData ? (captionData['zh'] || captionData['en']) : ''; // 優先使用中文
-
+    const captionText = captionData ? (captionData[currentLanguage] || captionData['en'] || captionData['zh']) : '';
+    
     if (captionText) {
         lightboxCaption.textContent = captionText;
         lightboxCaption.style.display = 'block';
@@ -134,8 +135,9 @@ function hideLightbox() {
     lightboxOverlay.setAttribute('aria-hidden', 'true');
 }
 
-export function openLightbox(imageList, captionList = [], startIndex = 0) {
+export function openLightbox(imageList, captionList = [], startIndex = 0, lang = 'en') {    
     if (!imageList || imageList.length === 0) return;
+    currentLanguage = lang;
     if (!lightboxOverlay) createLightbox();
     images = imageList;
     captions = captionList; // 儲存圖片說明

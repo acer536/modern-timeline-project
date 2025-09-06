@@ -9,6 +9,7 @@ const popupContainer = document.getElementById('eventPopupContainer');
 // 狀態變數
 let currentCloseButton = null;
 let currentImageWrapper = null;
+let language = 'en';
 let currentPopupPrevBtn = null;
 let currentPopupNextBtn = null;
 let popupImages = [];
@@ -86,7 +87,7 @@ function closePopup() {
 function handleImageClick(e) {
     // 如果只是滑動，就不打開燈箱
     if (touchStartX !== touchEndX) return;
-    openLightbox(popupImages, popupCaptions, currentPopupIndex);
+    openLightbox(popupImages, popupCaptions, currentPopupIndex, language);    
 }
 
 function handleKeyDown(e) {
@@ -96,6 +97,7 @@ function handleKeyDown(e) {
 // --- 主要匯出函式 ---
 export function showEventPopup(event, details, currentLang, direction = 'right') {
     if (!popupOverlay || !popupContainer) return;
+    language = currentLang;
         const fullDescription = details.fullDescription ? (details.fullDescription[currentLang] || details.fullDescription['en']) : '';
         const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
         const eventName = event.eventName[currentLang] || event.eventName['en'];
