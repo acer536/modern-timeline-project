@@ -1695,18 +1695,32 @@ body.is-android .site-hero {
         .lightbox-content {
             position: relative;
             max-width: 90vw;
-            max-height: 85vh;
+            max-height: 90vh; /* 新增，確保內容不超出視窗 */
             display: flex;
+            flex-direction: column; /* 讓圖片和說明垂直排列 */
             align-items: center;
             justify-content: center;
         }
 
         .lightbox-image {
             max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            height: 70vh; /* 將圖片容器的高度固定為視窗高度的70% */
+            /* max-height: 70vh; <-- 這行可以刪除或保留，效果一樣 */
+            object-fit: contain; /* 確保圖片完整顯示在容器內，不會被裁切 */
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: block;
+        }
+
+        /* --- 新增：燈箱圖片說明樣式 --- */
+        .lightbox-caption {
+            color: #e5e7eb;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: none; /* 預設隱藏 */
+            margin-top: 5px;
         }
 
         .lightbox-close-button {
@@ -1756,10 +1770,10 @@ body.is-android .site-hero {
         }
 
         .lightbox-counter {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
+            position: absolute; /* 改回絕對定位 */
+            bottom: 1rem; /* 定位在底部 */
+            left: 50%; /* 先移到中間 */
+            transform: translateX(-50%); /* 再精確置中 */
             background-color: rgba(0,0,0,0.5);
             color: white;
             padding: 0.25rem 0.75rem;

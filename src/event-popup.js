@@ -15,6 +15,7 @@ let popupImages = [];
 let currentPopupIndex = 0;
 let touchStartX = 0; // 新增：用於滑動
 let touchEndX = 0; // 新增：用於滑動
+let popupCaptions = [];
 
 // --- 內部圖片切換邏輯 ---
 function showImageInPopup(index) {
@@ -85,7 +86,7 @@ function closePopup() {
 function handleImageClick(e) {
     // 如果只是滑動，就不打開燈箱
     if (touchStartX !== touchEndX) return;
-    openLightbox(popupImages, currentPopupIndex);
+    openLightbox(popupImages, popupCaptions, currentPopupIndex);
 }
 
 function handleKeyDown(e) {
@@ -95,29 +96,32 @@ function handleKeyDown(e) {
 // --- 主要匯出函式 ---
 export function showEventPopup(event, details, currentLang, direction = 'right') {
     if (!popupOverlay || !popupContainer) return;
-    const imageCaption = details.imageCaption ? (details.imageCaption[currentLang] || details.imageCaption['en']) : '';
-    const fullDescription = details.fullDescription ? (details.fullDescription[currentLang] || details.fullDescription['en']) : '';
-    const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
-    const eventName = event.eventName[currentLang] || event.eventName['en'];
-    const hasImages = details.imageUrl && Array.isArray(details.imageUrl) && details.imageUrl.length > 0;
-    if (hasImages) {
-        popupImages = details.imageUrl;
-        currentPopupIndex = 0;
-    }
+        const fullDescription = details.fullDescription ? (details.fullDescription[currentLang] || details.fullDescription['en']) : '';
+        const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
+        const eventName = event.eventName[currentLang] || event.eventName['en'];
+        const hasImages = details.imageUrl && Array.isArray(details.imageUrl) && details.imageUrl.length > 0;
 
-    popupContainer.innerHTML = `
-        <button id="eventPopupCloseButton" class="event-popup-close-button" aria-label="Close details">&times;</button>
-        ${hasImages ? `
-            <div id="popupImageWrapper" class="event-popup-image-wrapper" style="cursor: pointer;">
-                <img src="${popupImages[0]}" alt="${imageCaption}" class="event-popup-image">
-                ${popupImages.length > 1 ? `
-                    <button class="popup-image-nav-button prev" aria-label="Previous image" style="display: none;">&#10094;</button>
-                    <button class="popup-image-nav-button next" aria-label="Next image">&#10095;</button>
-                ` : ''}
-            </div>
-        ` : ''}
-        ${imageCaption ? `<div class="event-popup-caption">${imageCaption}</div>` : ''}
-        <div class="event-popup-content">
+        if (hasImages) {
+            popupImages = details.imageUrl;
+            popupCaptions = details.imageCaption || []; // 取得說明陣列
+            currentPopupIndex = 0;
+        }
+
+        // 取得第一張圖的圖片標題給 alt 屬性用
+        const firstImageAlt = (popupCaptions[0] && popupCaptions[0][currentLang]) ? popupCaptions[0][currentLang] : eventName;
+
+        popupContainer.innerHTML = `
+            <button id="eventPopupCloseButton" class="event-popup-close-button" aria-label="Close details">&times;</button>
+            ${hasImages ? `
+                <div id="popupImageWrapper" class="event-popup-image-wrapper" style="cursor: pointer;">
+                    <img src="${popupImages[0]}" alt="${firstImageAlt}" class="event-popup-image">
+                    ${popupImages.length > 1 ? `
+                        <button class="popup-image-nav-button prev" aria-label="Previous image" style="display: none;">&#10094;</button>
+                        <button class="popup-image-nav-button next" aria-label="Next image">&#10095;</button>
+                    ` : ''}
+                </div>
+            ` : ''}
+            <div class="event-popup-content">        
             <h3 class="event-popup-title">${eventName}</h3>
             <p class="event-popup-description">${fullDescription.replace(/\n/g, '<br>')}</p>
             ${details.sourceUrl ? `
