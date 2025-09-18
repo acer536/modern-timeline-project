@@ -1576,15 +1576,22 @@ body.is-android .site-hero {
         }
 
         .event-popup-image {
-            width: 100%;
+            /* 圖片置中樣式 */
+            max-width: 100%;
+            max-height: 100%;
             height: 100%;
-            object-fit: contain; /* 修改：確保圖片完整顯示 */
+            width: auto;
             transition: transform 0.3s ease-out;
         }
-        /* 修改：只有當滑鼠在圖片區塊上時才放大圖片 */
-        .event-popup-image-wrapper:hover .event-popup-image {
+
+        /* 修改：只有當滑鼠在當前的圖片上時才放大，並解決層級問題 */
+        .image-slide:hover {
+            z-index: 2; /* 提升層級，確保放大時在最上層，不會被旁邊的圖片擋住 */
+        }
+
+        .image-slide:hover .event-popup-image {
             transform: scale(1.05);
-        }        
+        }
 
         .event-popup-content {
             padding: 1.5rem;
@@ -1784,6 +1791,7 @@ body.is-android .site-hero {
         /* --- 新增：彈出視窗內部圖片切換按鈕樣式 --- */
         .popup-image-nav-button {
             position: absolute;
+            z-index: 20; /* 【新增】確保按鈕永遠在圖片上層 */
             top: 50%;
             transform: translateY(-50%);
             background-color: rgba(0, 0, 0, 0.4);
@@ -1823,4 +1831,29 @@ body.is-android .site-hero {
         /* 讓圖片下方的計數器消失 */
         .event-popup-image-wrapper .lightbox-counter {
             display: none;
+        }
+
+        /* --- 彈出視窗滑動效果修正 --- */
+
+        /* 滑動容器本體 */
+        #image-slider-container {
+            display: flex;
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        /* 用於置中圖片的外層容器 */
+        .image-slide {
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* 【新增】為了讓 z-index 生效 */
+        }
+
+        /* 用於 JS 控制隱藏按鈕的 class */
+        .popup-image-nav-button.is-hidden {
+            display: none !important;
         }

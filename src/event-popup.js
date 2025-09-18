@@ -2,64 +2,114 @@
 
 import { openLightbox } from './lightbox.js';
 
-// DOM 元素快取
+// --- DOM 元素 ---
 const popupOverlay = document.getElementById('eventPopupOverlay');
 const popupContainer = document.getElementById('eventPopupContainer');
 
-// 狀態變數
-let currentCloseButton = null;
-let currentImageWrapper = null;
-let language = 'en';
-let currentPopupPrevBtn = null;
-let currentPopupNextBtn = null;
+// --- 狀態變數 ---
 let popupImages = [];
-let currentPopupIndex = 0;
-let touchStartX = 0; // 新增：用於滑動
-let touchEndX = 0; // 新增：用於滑動
 let popupCaptions = [];
+let popupCurrentIndex = 0;
+let language = 'en';
 
-// --- 內部圖片切換邏輯 ---
-function showImageInPopup(index) {
-    if (index < 0 || index >= popupImages.length) return;
-    currentPopupIndex = index;
-    const imgElement = popupContainer.querySelector('.event-popup-image');
-    if (imgElement) {
-        imgElement.src = popupImages[currentPopupIndex];
+// --- 【新增】觸控滑動相關的狀態變數 ---
+let touchStartX = 0;
+let touchCurrentX = 0;
+let isDragging = false;
+let sliderWidth = 0;
+
+// 使用 CSS class 來控制按鈕顯示
+function updateArrowVisibility() {
+    const prevBtn = document.getElementById('popupPrevButton');
+    const nextBtn = document.getElementById('popupNextButton');
+    if (!prevBtn || !nextBtn) return;
+
+    prevBtn.classList.toggle('is-hidden', popupCurrentIndex === 0);
+    nextBtn.classList.toggle('is-hidden', popupCurrentIndex === popupImages.length - 1);
+}
+
+// 執行滑動的核心函式
+function slideToIndex(index) {
+    const slider = document.getElementById('image-slider-container');
+    if (!slider) return;
+
+    if (index < 0 || index >= popupImages.length) {
+        return;
     }
-    if (currentPopupPrevBtn && currentPopupNextBtn) {
-        currentPopupPrevBtn.style.display = (currentPopupIndex === 0) ? 'none' : 'flex';
-        currentPopupNextBtn.style.display = (currentPopupIndex === popupImages.length - 1) ? 'none' : 'flex';
+
+    const newTransformValue = `translateX(-${index * 100}%)`;
+    slider.style.transition = 'transform 0.4s ease-in-out'; // 確保有動畫效果
+    slider.style.transform = newTransformValue;
+    popupCurrentIndex = index;
+
+    updateArrowVisibility();
+}
+
+// 顯示下一張圖片
+function showNextInPopup() {
+    if (popupCurrentIndex < popupImages.length - 1) {
+        slideToIndex(popupCurrentIndex + 1);
     }
 }
 
-function showNextInPopup(e) {
-    if (e) e.stopPropagation(); // 防止觸發燈箱
-    showImageInPopup(currentPopupIndex + 1);
+// 顯示上一張圖片
+function showPrevInPopup() {
+    if (popupCurrentIndex > 0) {
+        slideToIndex(popupCurrentIndex - 1);
+    }
 }
 
-function showPrevInPopup(e) {
-    if (e) e.stopPropagation(); // 防止觸發燈箱
-    showImageInPopup(currentPopupIndex - 1);
+// --- 【新增】處理手指觸控開始的函式 ---
+function handleTouchStart(e) {
+    if (popupImages.length <= 1) return;
+    isDragging = true;
+    touchStartX = e.touches[0].clientX;
+    const slider = document.getElementById('image-slider-container');
+    slider.style.transition = 'none'; // 滑動時暫時移除動畫
+    sliderWidth = slider.offsetWidth; // 取得容器寬度
 }
 
-// --- 新增：處理彈出視窗內的滑動手勢 ---
-function handlePopupGesture() {
-    // 如果起點和終點一樣 (表示只是點擊而不是滑動)，就不做任何事
-    if (touchStartX === touchEndX) return;
+// --- 【新增】處理手指移動的函式 ---
+function handleTouchMove(e) {
+    if (!isDragging || popupImages.length <= 1) return;
+    touchCurrentX = e.touches[0].clientX;
+    const diff = touchCurrentX - touchStartX;
+    
+    // 讓圖片跟著手指即時移動
+    const currentTranslate = -popupCurrentIndex * sliderWidth;
+    const newTranslate = currentTranslate + diff;
 
-    const swipeThreshold = 50; // 手指至少要滑動 50px 才會觸發
-    if (touchEndX < touchStartX - swipeThreshold) {
-        // 向左滑動
+    const slider = document.getElementById('image-slider-container');
+    slider.style.transform = `translateX(${newTranslate}px)`; // 用像素移動，更即時
+}
+
+// --- 【新增】處理手指離開螢幕的函式 ---
+function handleTouchEnd() {
+    if (!isDragging || popupImages.length <= 1) return;
+    isDragging = false;
+    
+    const diff = touchCurrentX - touchStartX;
+    const swipeThreshold = 50; // 設定一個滑動閾值，避免輕微誤觸
+
+    // 判斷滑動方向和距離
+    if (diff < -swipeThreshold) {
+        // 向左滑，顯示下一張
         showNextInPopup();
-    } else if (touchEndX > touchStartX + swipeThreshold) {
-        // 向右滑動
+    } else if (diff > swipeThreshold) {
+        // 向右滑，顯示上一張
         showPrevInPopup();
+    } else {
+        // 滑動距離不夠，彈回原位
+        slideToIndex(popupCurrentIndex);
     }
+    
+    // 清理起始點，為下次滑動做準備
+    touchStartX = 0;
+    touchCurrentX = 0;
 }
 
-// --- 燈箱與彈出視窗控制 ---
+
 function closePopup() {
-    if (!popupOverlay || !popupContainer) return;
     document.body.classList.remove('popup-is-open');
     popupOverlay.classList.remove('is-visible');
     popupOverlay.setAttribute('aria-hidden', 'true');
@@ -67,63 +117,47 @@ function closePopup() {
     popupContainer.classList.remove(`from-${direction}`);
     setTimeout(() => {
         popupContainer.innerHTML = '';
-        currentCloseButton?.removeEventListener('click', closePopup);
-        currentImageWrapper?.removeEventListener('click', handleImageClick);
-        currentPopupPrevBtn?.removeEventListener('click', showPrevInPopup);
-        currentPopupNextBtn?.removeEventListener('click', showNextInPopup);
-        // 新增：移除滑動事件監聽
-        currentImageWrapper?.removeEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
-        currentImageWrapper?.removeEventListener('touchend', (e) => { touchEndX = e.changedTouches[0].screenX; handlePopupGesture(); });
-        
-        currentCloseButton = null;
-        currentImageWrapper = null;
-        currentPopupPrevBtn = null;
-        currentPopupNextBtn = null;
-        popupImages = [];
-        currentPopupIndex = 0;
-    }, 400); 
+    }, 400);
 }
 
-function handleImageClick(e) {
-    // 如果只是滑動，就不打開燈箱
-    if (touchStartX !== touchEndX) return;
-    openLightbox(popupImages, popupCaptions, currentPopupIndex, language);    
+function handleImageClick() {
+    openLightbox(popupImages, popupCaptions, popupCurrentIndex, language);
 }
 
 function handleKeyDown(e) {
     if (e.key === 'Escape') closePopup();
+    if (e.key === 'ArrowRight') showNextInPopup();
+    if (e.key === 'ArrowLeft') showPrevInPopup();
 }
 
-// --- 主要匯出函式 ---
 export function showEventPopup(event, details, currentLang, direction = 'right') {
-    if (!popupOverlay || !popupContainer) return;
     language = currentLang;
-        const fullDescription = details.fullDescription ? (details.fullDescription[currentLang] || details.fullDescription['en']) : '';
-        const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
-        const eventName = event.eventName[currentLang] || event.eventName['en'];
-        const hasImages = details.imageUrl && Array.isArray(details.imageUrl) && details.imageUrl.length > 0;
+    const hasImages = details.imageUrl && Array.isArray(details.imageUrl) && details.imageUrl.length > 0;
 
-        if (hasImages) {
-            popupImages = details.imageUrl;
-            popupCaptions = details.imageCaption || []; // 取得說明陣列
-            currentPopupIndex = 0;
-        }
+    if (hasImages) {
+        popupImages = details.imageUrl;
+        popupCaptions = details.imageCaption || [];
+        popupCurrentIndex = 0;
+    }
 
-        // 取得第一張圖的圖片標題給 alt 屬性用
-        const firstImageAlt = (popupCaptions[0] && popupCaptions[0][currentLang]) ? popupCaptions[0][currentLang] : eventName;
+    const imagesHTML = hasImages ? popupImages.map(imgUrl =>
+        `<div class="image-slide"><img src="${imgUrl}" alt="" class="event-popup-image"></div>`
+    ).join('') : '';
 
-        popupContainer.innerHTML = `
-            <button id="eventPopupCloseButton" class="event-popup-close-button" aria-label="Close details">&times;</button>
-            ${hasImages ? `
-                <div id="popupImageWrapper" class="event-popup-image-wrapper" style="cursor: pointer;">
-                    <img src="${popupImages[0]}" alt="${firstImageAlt}" class="event-popup-image">
-                    ${popupImages.length > 1 ? `
-                        <button class="popup-image-nav-button prev" aria-label="Previous image" style="display: none;">&#10094;</button>
-                        <button class="popup-image-nav-button next" aria-label="Next image">&#10095;</button>
-                    ` : ''}
-                </div>
-            ` : ''}
-            <div class="event-popup-content">        
+    const fullDescription = details.fullDescription ? (details.fullDescription[currentLang] || details.fullDescription['en']) : '';
+    const sourceText = details.sourceText ? (details.sourceText[currentLang] || details.sourceText['en']) : 'Learn More';
+    const eventName = event.eventName[currentLang] || event.eventName['en'];
+
+    popupContainer.innerHTML = `
+        <button id="eventPopupCloseButton" class="event-popup-close-button" aria-label="Close details">&times;</button>
+        ${hasImages ? `
+            <div id="popupImageWrapper" class="event-popup-image-wrapper">
+                <div id="image-slider-container">${imagesHTML}</div>
+                <button id="popupPrevButton" class="popup-image-nav-button prev" aria-label="Previous image">&#10094;</button>
+                <button id="popupNextButton" class="popup-image-nav-button next" aria-label="Next image">&#10095;</button>
+            </div>
+        ` : ''}
+        <div class="event-popup-content">
             <h3 class="event-popup-title">${eventName}</h3>
             <p class="event-popup-description">${fullDescription.replace(/\n/g, '<br>')}</p>
             ${details.sourceUrl ? `
@@ -135,29 +169,30 @@ export function showEventPopup(event, details, currentLang, direction = 'right')
         </div>
     `;
 
-    currentCloseButton = document.getElementById('eventPopupCloseButton');
-    currentCloseButton?.addEventListener('click', closePopup);
+    // 綁定事件
+    document.getElementById('eventPopupCloseButton')?.addEventListener('click', closePopup);
     if (hasImages) {
-        currentImageWrapper = document.getElementById('popupImageWrapper');
-        currentPopupPrevBtn = popupContainer.querySelector('.popup-image-nav-button.prev');
-        currentPopupNextBtn = popupContainer.querySelector('.popup-image-nav-button.next');
-        currentImageWrapper?.addEventListener('click', handleImageClick);
-        currentPopupPrevBtn?.addEventListener('click', showPrevInPopup);
-        currentPopupNextBtn?.addEventListener('click', showNextInPopup);
-
-        // --- 為彈出視窗圖片加上滑動事件 ---
-        if (currentImageWrapper) {
-            currentImageWrapper.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchEndX = e.changedTouches[0].screenX; // 重置終點
-            }, { passive: true });
-            currentImageWrapper.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handlePopupGesture();
-            });
+        const imageWrapper = document.getElementById('popupImageWrapper');
+        imageWrapper?.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON' && !isDragging) handleImageClick();
+        });
+        document.getElementById('popupNextButton')?.addEventListener('click', showNextInPopup);
+        document.getElementById('popupPrevButton')?.addEventListener('click', showPrevInPopup);
+        
+        // --- 【新增】為圖片容器加上觸控事件的監聽 ---
+        imageWrapper?.addEventListener('touchstart', handleTouchStart, { passive: true });
+        imageWrapper?.addEventListener('touchmove', handleTouchMove, { passive: true });
+        imageWrapper?.addEventListener('touchend', handleTouchEnd);
+        
+        updateArrowVisibility();
+        if (popupImages.length <= 1) {
+            const nextBtn = document.getElementById('popupNextButton');
+            const prevBtn = document.getElementById('popupPrevButton');
+            if (nextBtn) nextBtn.classList.add('is-hidden');
+            if (prevBtn) prevBtn.classList.add('is-hidden');
         }
     }
-    
+
     popupContainer.dataset.direction = direction;
     popupContainer.classList.add(`from-${direction}`);
     document.body.classList.add('popup-is-open');
