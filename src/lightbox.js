@@ -1,132 +1,112 @@
 // src/lightbox.js
 
-// --- DOM 元素 ---
-let lightboxOverlay = null;
-let lightboxImage = null;
-let lightboxContent = null;
-let lightboxPrevBtn = null;
-let lightboxNextBtn = null;
-let lightboxCounter = null;
-let lightboxCaption = null;
-
 // --- 狀態變數 ---
-let images = [];
-let captions = [];
-let currentLanguage = 'en';
+let lightboxOverlay = null;
+let imageList = [];
+let captionList = [];
 let currentIndex = 0;
+let language = 'en';
+
+// --- 觸控滑動相關的狀態變數 ---
 let touchStartX = 0;
-let touchEndX = 0;
-let isDragging = false; // 新增：判斷是否正在拖曳
+let touchCurrentX = 0;
+let isDragging = false;
+let sliderWidth = 0;
 
-// --- 函式 ---
-function createLightbox() {
-    if (document.getElementById('lightboxOverlay')) return;
+// 更新左右箭頭的顯示狀態
+function updateLightboxArrowVisibility() {
+    const prevBtn = lightboxOverlay.querySelector('.lightbox-nav-button.prev');
+    const nextBtn = lightboxOverlay.querySelector('.lightbox-nav-button.next');
+    if (!prevBtn || !nextBtn) return;
 
-    const lightboxHTML = `
-        <div id="lightboxOverlay" class="lightbox-overlay" aria-hidden="true" role="dialog" aria-modal="true">
-            <button class="lightbox-close-button" aria-label="Close image view">&times;</button>
-            <button class="lightbox-nav-button prev" aria-label="Previous image">&#10094;</button>
-            <div class="lightbox-content">
-                <img src="" alt="" class="lightbox-image">
-                <div class="lightbox-caption"></div>
-            </div>
-            <button class="lightbox-nav-button next" aria-label="Next image">&#10095;</button>
-            <div class="lightbox-counter"></div>
-        </div>
-    `;    
-    document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+    if (imageList.length <= 1) {
+        prevBtn.classList.add('is-hidden');
+        nextBtn.classList.add('is-hidden');
+        return;
+    }
 
-    lightboxOverlay = document.getElementById('lightboxOverlay');
-    lightboxImage = lightboxOverlay.querySelector('.lightbox-image');
-    lightboxContent = lightboxOverlay.querySelector('.lightbox-content');
-    lightboxPrevBtn = lightboxOverlay.querySelector('.prev');
-    lightboxNextBtn = lightboxOverlay.querySelector('.next');
-    lightboxCounter = lightboxOverlay.querySelector('.lightbox-counter');
-    lightboxCaption = lightboxOverlay.querySelector('.lightbox-caption');
-    const lightboxCloseBtn = lightboxOverlay.querySelector('.lightbox-close-button');
-
-    // 綁定事件
-    lightboxCloseBtn.addEventListener('click', hideLightbox);
-    lightboxOverlay.addEventListener('click', (e) => { if (e.target === lightboxOverlay) hideLightbox(); });
-    lightboxContent.addEventListener('click', (e) => { if (e.target === lightboxContent) hideLightbox(); });
-    lightboxPrevBtn.addEventListener('click', showPrevImage);
-    lightboxNextBtn.addEventListener('click', showNextImage);
-    document.addEventListener('keydown', handleKeydown);
-
-    // --- 觸控與滑鼠滑動事件監聽器 ---
-    const startDrag = (e) => {
-        isDragging = true;
-        // 判斷是觸控事件還是滑鼠事件
-        touchStartX = e.type === 'touchstart' ? e.changedTouches[0].screenX : e.screenX;
-        // lightboxContent.style.cursor = 'grabbing';
-    };
-
-    const endDrag = (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        touchEndX = e.type === 'touchend' ? e.changedTouches[0].screenX : e.screenX;
-        // lightboxContent.style.cursor = 'grab';
-        handleGesture();
-    };
-    
-    // 手機觸控
-    lightboxContent.addEventListener('touchstart', startDrag, { passive: true });
-    lightboxContent.addEventListener('touchend', endDrag);
-
-    // 電腦滑鼠拖曳
-    lightboxContent.addEventListener('mousedown', startDrag);
-    lightboxContent.addEventListener('mouseup', endDrag);
-    lightboxContent.addEventListener('mouseleave', () => { // 如果滑鼠移出區域，取消拖曳
-        if (isDragging) {
-            isDragging = false;
-            // lightboxContent.style.cursor = 'grab';
-        }
-    });
+    prevBtn.classList.toggle('is-hidden', currentIndex === 0);
+    nextBtn.classList.toggle('is-hidden', currentIndex === imageList.length - 1);
 }
 
-function showImage(index) {
-    if (index < 0 || index >= images.length) return;
-    currentIndex = index;
-    lightboxImage.src = images[currentIndex];
+// 更新圖片說明
+function updateLightboxCaption() {
+    const captionDisplay = document.getElementById('lightbox-caption-display');
+    if (!captionDisplay) return;
 
-    // 處理圖片說明
-    const captionData = captions[currentIndex];
-    const captionText = captionData ? (captionData[currentLanguage] || captionData['en'] || captionData['zh']) : '';
-    
-    if (captionText) {
-        lightboxCaption.textContent = captionText;
-        lightboxCaption.style.display = 'block';
+    const captionData = captionList[currentIndex];
+    if (captionData) {
+        const captionText = captionData[language] || captionData['en'] || '';
+        captionDisplay.textContent = captionText;
+        captionDisplay.style.display = captionText ? 'block' : 'none';
     } else {
-        lightboxCaption.style.display = 'none';
-    }
-
-    // 更新計數器和導航按鈕
-    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-    lightboxPrevBtn.style.display = (currentIndex === 0) ? 'none' : 'flex';
-    lightboxNextBtn.style.display = (currentIndex === images.length - 1) ? 'none' : 'flex';
-}
-
-function showNextImage() { showImage(currentIndex + 1); }
-function showPrevImage() { showImage(currentIndex - 1); }
-
-function handleKeydown(e) {
-    if (lightboxOverlay.classList.contains('is-visible')) {
-        if (e.key === 'ArrowRight' && currentIndex < images.length - 1) showNextImage();
-        else if (e.key === 'ArrowLeft' && currentIndex > 0) showPrevImage();
-        else if (e.key === 'Escape') hideLightbox();
+        captionDisplay.style.display = 'none';
     }
 }
 
-function handleGesture() {
-    // 如果起點和終點一樣 (表示只是點擊而不是滑動)，就不做任何事
-    if (touchStartX === touchEndX) return;
+// 滑動到指定索引的圖片
+function slideLightboxToIndex(index) {
+    const slider = document.getElementById('lightbox-slider-container');
+    if (!slider || index < 0 || index >= imageList.length) return;
 
+    const newTransformValue = `translateX(-${index * 100}%)`;
+    slider.style.transition = 'transform 0.4s ease-in-out';
+    slider.style.transform = newTransformValue;
+    currentIndex = index;
+
+    updateLightboxCaption();
+    updateLightboxArrowVisibility();
+}
+
+// 顯示下一張
+function showNextImage() {
+    if (currentIndex < imageList.length - 1) {
+        slideLightboxToIndex(currentIndex + 1);
+    }
+}
+
+// 顯示上一張
+function showPrevImage() {
+    if (currentIndex > 0) {
+        slideLightboxToIndex(currentIndex - 1);
+    }
+}
+
+// --- 處理觸控事件的函式 ---
+function handleLightboxTouchStart(e) {
+    if (imageList.length <= 1) return;
+    isDragging = true;
+    touchStartX = e.touches[0].clientX;
+    const slider = document.getElementById('lightbox-slider-container');
+    slider.style.transition = 'none';
+    sliderWidth = slider.offsetWidth;
+}
+
+function handleLightboxTouchMove(e) {
+    if (!isDragging || imageList.length <= 1) return;
+    touchCurrentX = e.touches[0].clientX;
+    const diff = touchCurrentX - touchStartX;
+    const currentTranslate = -currentIndex * sliderWidth;
+    const newTranslate = currentTranslate + diff;
+    const slider = document.getElementById('lightbox-slider-container');
+    slider.style.transform = `translateX(${newTranslate}px)`;
+}
+
+function handleLightboxTouchEnd() {
+    if (!isDragging || imageList.length <= 1) return;
+    isDragging = false;
+    const diff = touchCurrentX - touchStartX;
     const swipeThreshold = 50;
-    if (touchEndX < touchStartX - swipeThreshold && currentIndex < images.length - 1) {
+
+    if (diff < -swipeThreshold) {
         showNextImage();
-    } else if (touchEndX > touchStartX + swipeThreshold && currentIndex > 0) {
+    } else if (diff > swipeThreshold) {
         showPrevImage();
+    } else {
+        slideLightboxToIndex(currentIndex);
     }
+    touchStartX = 0;
+    touchCurrentX = 0;
 }
 
 function hideLightbox() {
@@ -135,15 +115,82 @@ function hideLightbox() {
     lightboxOverlay.setAttribute('aria-hidden', 'true');
 }
 
-export function openLightbox(imageList, captionList = [], startIndex = 0, lang = 'en') {    
-    if (!imageList || imageList.length === 0) return;
-    currentLanguage = lang;
+// 建立燈箱的 HTML 結構
+function createLightbox() {
+    if (document.getElementById('lightboxOverlay')) return;
+
+    // 【核心修正】將 lightbox-caption 放回 lightbox-content 內部
+    const lightboxHTML = `
+        <div id="lightboxOverlay" class="lightbox-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+            <button class="lightbox-close-button" aria-label="Close image view">&times;</button>
+            
+            <div class="lightbox-content">
+                <div id="lightbox-viewport">
+                    <div id="lightbox-slider-container"></div>
+                </div>
+                <div class="lightbox-caption" id="lightbox-caption-display"></div>
+            </div>
+
+            <button class="lightbox-nav-button prev" aria-label="Previous image">&#10094;</button>
+            <button class="lightbox-nav-button next" aria-label="Next image">&#10095;</button>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+    lightboxOverlay = document.getElementById('lightboxOverlay');
+
+    // 綁定固定的事件
+    lightboxOverlay.querySelector('.lightbox-close-button').addEventListener('click', hideLightbox);
+    lightboxOverlay.addEventListener('click', (e) => {
+        const target = e.target;
+        // 檢查點擊的目標是否是任何一個 "空白" 容器
+        if (
+            target === lightboxOverlay || // 1. 最外層的黑色背景
+            target.classList.contains('lightbox-content') || // 2. 包圍圖片和文字的內容區
+            target.id === 'lightbox-viewport' || // 3. 圖片左右的 "視窗"
+            target.classList.contains('lightbox-slide') // 4. 包圍圖片的透明滑動區
+        ) {
+            hideLightbox();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (!lightboxOverlay || !lightboxOverlay.classList.contains('is-visible')) return;
+        if (e.key === 'Escape') hideLightbox();
+        if (e.key === 'ArrowRight') showNextImage();
+        if (e.key === 'ArrowLeft') showPrevImage();
+    });
+}
+
+// 主要的匯出函式，用來打開燈箱
+export function openLightbox(images, captions = [], startIndex = 0, lang = 'en') {
+    if (!images || images.length === 0) return;
     if (!lightboxOverlay) createLightbox();
-    images = imageList;
-    captions = captionList; // 儲存圖片說明
+
+    imageList = images;
+    captionList = captions;
+    currentIndex = startIndex;
+    language = lang;
+
+    const sliderContainer = document.getElementById('lightbox-slider-container');
+    const slidesHTML = imageList.map(imgUrl => {
+        const captionData = captionList[imageList.indexOf(imgUrl)] || {};
+        const altText = captionData[lang] || captionData['en'] || '';
+        return `<div class="lightbox-slide"><img src="${imgUrl}" alt="${altText}" class="lightbox-image"></div>`;
+    }).join('');
+    sliderContainer.innerHTML = slidesHTML;
+
     document.body.classList.add('popup-is-open');
     lightboxOverlay.classList.add('is-visible');
     lightboxOverlay.setAttribute('aria-hidden', 'false');
-    // lightboxContent.style.cursor = 'grab';
-    showImage(startIndex);
+    
+    // 初始化
+    slideLightboxToIndex(currentIndex); // 直接使用這個函式來初始化位置和狀態
+
+    // 綁定事件
+    lightboxOverlay.querySelector('.lightbox-nav-button.next').addEventListener('click', showNextImage);
+    lightboxOverlay.querySelector('.lightbox-nav-button.prev').addEventListener('click', showPrevImage);
+    
+    const viewport = document.getElementById('lightbox-viewport');
+    viewport.addEventListener('touchstart', handleLightboxTouchStart, { passive: true });
+    viewport.addEventListener('touchmove', handleLightboxTouchMove, { passive: true });
+    viewport.addEventListener('touchend', handleLightboxTouchEnd);
 }

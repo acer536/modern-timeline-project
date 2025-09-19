@@ -1702,18 +1702,16 @@ body.is-android .site-hero {
         .lightbox-content {
             position: relative;
             max-width: 90vw;
-            max-height: 90vh; /* 新增，確保內容不超出視窗 */
+            max-height: 90vh;
             display: flex;
-            flex-direction: column; /* 讓圖片和說明垂直排列 */
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
         .lightbox-image {
             max-width: 100%;
-            height: 70vh; /* 將圖片容器的高度固定為視窗高度的70% */
-            /* max-height: 70vh; <-- 這行可以刪除或保留，效果一樣 */
-            object-fit: contain; /* 確保圖片完整顯示在容器內，不會被裁切 */
+            height: 70vh; /* 關鍵：將圖片容器的高度固定為視窗高度的70% */
+            object-fit: contain; /* 關鍵：確保圖片完整顯示在容器內，不會被裁切 */
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: block;
@@ -1727,7 +1725,10 @@ body.is-android .site-hero {
             font-size: 0.95rem;
             line-height: 1.5;
             display: none; /* 預設隱藏 */
-            margin-top: 5px;
+            margin-top: calc(5px - 2.5rem); /* 【修改】使用負邊距，將說明文字拉回原位 */
+            position: relative; /* 【新增】讓 z-index 生效 */
+            z-index: 10;        /* 【新增】將文字層級提升到圖片之上 */
+            user-select: text;  /* 【新增】確保文字可被選取 */
         }
 
         .lightbox-close-button {
@@ -1750,6 +1751,7 @@ body.is-android .site-hero {
 
         .lightbox-nav-button {
             position: absolute;
+            z-index: 20;
             top: 50%;
             transform: translateY(-50%);
             background-color: rgba(0,0,0,0.3);
@@ -1855,5 +1857,37 @@ body.is-android .site-hero {
 
         /* 用於 JS 控制隱藏按鈕的 class */
         .popup-image-nav-button.is-hidden {
+            display: none !important;
+        }
+
+        /* --- 燈箱滑動效果所需的新增樣式 --- */
+
+        #lightbox-viewport {
+            width: 100%;
+            overflow: hidden;
+            flex-grow: 1; /* 讓圖片區域佔滿可用空間 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #lightbox-slider-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .lightbox-slide {
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0.5rem 2.5rem 0.5rem; /* 【修改】上下左右的內邊距，底部留出 2rem 空間 */            
+            box-sizing: border-box;
+        }
+
+        .lightbox-nav-button.is-hidden {
             display: none !important;
         }
