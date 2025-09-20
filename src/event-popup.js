@@ -64,6 +64,7 @@ function handleTouchStart(e) {
     if (popupImages.length <= 1) return;
     isDragging = true;
     touchStartX = e.touches[0].clientX;
+    touchCurrentX = touchStartX; // <<< 新增這一行，修正點擊 bug
     const slider = document.getElementById('image-slider-container');
     slider.style.transition = 'none'; // 滑動時暫時移除動畫
     sliderWidth = slider.offsetWidth; // 取得容器寬度

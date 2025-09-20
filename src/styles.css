@@ -1891,3 +1891,53 @@ body.is-android .site-hero {
         .lightbox-nav-button.is-hidden {
             display: none !important;
         }
+
+        /* --- 燈箱 (Lightbox) 行動裝置最終整合修正 --- */
+        @media (max-width: 640px) {
+
+            /* 1. 內容區修正：解決「相框效應」和「說明文字過遠」問題 */
+            .lightbox-content {
+                height: auto; /* 高度由內容決定 */
+                max-height: 95vh;
+                display: flex;
+                align-items: center; /* 垂直置中整個內容區 */
+            }
+
+            /* 2. 圖片尺寸修正 */
+            .lightbox-image {
+                height: auto; /* 高度自適應，避免被拉伸 */
+                max-height: 75vh;
+            }
+
+            /* 3. 圖片置中核心修正：強制每張圖片在自己的滑動頁內垂直置中 */
+            .lightbox-slide {
+                display: flex;
+                align-items: center; /* 關鍵：讓圖片在被撐高的容器內也能垂直置中 */
+                height: 100%;
+            }
+
+            /* 4. 箭頭定位基準點 */
+            #lightbox-viewport {
+                position: relative;
+            }
+
+            /* 5. 箭頭精準定位與外觀 */
+            .lightbox-nav-button {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+            }
+
+            .lightbox-nav-button.prev {
+                left: 0;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            .lightbox-nav-button.next {
+                right: 0;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
