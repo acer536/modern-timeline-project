@@ -1897,10 +1897,12 @@ body.is-android .site-hero {
 
             /* 1. 內容區修正：解決「相框效應」和「說明文字過遠」問題 */
             .lightbox-content {
-                height: auto; /* 高度由內容決定 */
+                height: 100%;
                 max-height: 95vh;
                 display: flex;
-                align-items: center; /* 垂直置中整個內容區 */
+                flex-direction: column; /* 確保圖片和文字是垂直堆疊 */
+                justify-content: center; /* 將內容在垂直方向上置中 */
+                align-items: center;
             }
 
             /* 2. 圖片尺寸修正 */
@@ -1918,7 +1920,7 @@ body.is-android .site-hero {
 
             /* 4. 箭頭定位基準點 */
             #lightbox-viewport {
-                position: relative;
+                flex-grow: 0; /* 防止圖片容器無限伸展 */
             }
 
             /* 5. 箭頭精準定位與外觀 */
