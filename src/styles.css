@@ -1944,3 +1944,21 @@ body.is-android .site-hero {
                 border-bottom-right-radius: 0;
             }
         }
+
+        /* --- 新增：取消在行動裝置上的燈箱圖片陰影 --- */
+        @media (max-width: 1024px) {
+            .lightbox-image {
+                box-shadow: none; /* 在平板與手機尺寸下移除陰影 */
+            }
+        }
+
+        /* --- 新增：移除手機版燈箱箭頭按鈕的背景色 --- */
+        @media (max-width: 640px) {
+            .lightbox-nav-button {
+                background-color: transparent;
+            }
+
+            .lightbox-nav-button:hover {
+                background-color: rgba(0, 0, 0, 0.25); /* 滑鼠移上去時給一點點回饋色 */
+            }
+        }
