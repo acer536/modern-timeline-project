@@ -1852,8 +1852,9 @@ body.is-android .site-hero {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative; /* 【新增】為了讓 z-index 生效 */
-        }
+            position: relative; /* 為了讓 z-index 生效 */
+            overflow: hidden; /* 新增：確保放大的圖片不會超出範圍 */
+        }        
 
         /* 用於 JS 控制隱藏按鈕的 class */
         .popup-image-nav-button.is-hidden {
