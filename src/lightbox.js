@@ -110,7 +110,6 @@ function handleLightboxTouchEnd() {
 }
 
 function hideLightbox() {
-    document.body.classList.remove('popup-is-open');
     lightboxOverlay.classList.remove('is-visible');
     lightboxOverlay.setAttribute('aria-hidden', 'true');
 }
