@@ -44,13 +44,14 @@ function updateLightboxCaption() {
     }
 }
 
-// 滑動到指定索引的圖片
-function slideLightboxToIndex(index) {
+function slideLightboxToIndex(index, withAnimation = true) {
     const slider = document.getElementById('lightbox-slider-container');
     if (!slider || index < 0 || index >= imageList.length) return;
 
     const newTransformValue = `translateX(-${index * 100}%)`;
-    slider.style.transition = 'transform 0.4s ease-in-out';
+
+    // 根據 withAnimation 參數決定是否要加上過渡動畫效果
+    slider.style.transition = withAnimation ? 'transform 0.4s ease-in-out' : 'none';
     slider.style.transform = newTransformValue;
     currentIndex = index;
 
@@ -182,7 +183,7 @@ export function openLightbox(images, captions = [], startIndex = 0, lang = 'en')
     lightboxOverlay.setAttribute('aria-hidden', 'false');
     
     // 初始化
-    slideLightboxToIndex(currentIndex); // 直接使用這個函式來初始化位置和狀態
+    slideLightboxToIndex(currentIndex, false); // 初始化時不要播放動畫
 
     // 綁定事件
     lightboxOverlay.querySelector('.lightbox-nav-button.next').addEventListener('click', showNextImage);
