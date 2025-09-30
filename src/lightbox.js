@@ -87,7 +87,13 @@ function handleLightboxTouchStart(e) {
 function handleLightboxTouchMove(e) {
     if (!isDragging || imageList.length <= 1) return;
     touchCurrentX = e.touches[0].clientX;
-    const diff = touchCurrentX - touchStartX;
+    let diff = touchCurrentX - touchStartX;
+
+    // 如果在第一張還想往右滑，或在最後一張還想往左滑，就增加阻力
+    if ((currentIndex === 0 && diff > 0) || (currentIndex === imageList.length - 1 && diff < 0)) {
+        diff /= 3; // 將滑動距離除以3，產生阻力感
+    }
+
     const currentTranslate = -currentIndex * sliderWidth;
     const newTranslate = currentTranslate + diff;
     const slider = document.getElementById('lightbox-slider-container');
@@ -100,11 +106,13 @@ function handleLightboxTouchEnd() {
     const diff = touchCurrentX - touchStartX;
     const swipeThreshold = 50;
 
-    if (diff < -swipeThreshold) {
+    // 判斷滑動方向、距離、以及是否還有下一張/上一張
+    if (diff < -swipeThreshold && currentIndex < imageList.length - 1) {
         showNextImage();
-    } else if (diff > swipeThreshold) {
+    } else if (diff > swipeThreshold && currentIndex > 0) {
         showPrevImage();
     } else {
+        // 不管是滑動距離不夠，還是已經滑到邊界，都彈回原位
         slideLightboxToIndex(currentIndex);
     }
     touchStartX = 0;

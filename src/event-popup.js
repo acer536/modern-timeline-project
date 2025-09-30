@@ -74,41 +74,41 @@ function handleTouchStart(e) {
 function handleTouchMove(e) {
     if (!isDragging || popupImages.length <= 1) return;
     touchCurrentX = e.touches[0].clientX;
-    const diff = touchCurrentX - touchStartX;
-    
-    // 讓圖片跟著手指即時移動
+    let diff = touchCurrentX - touchStartX;
+
+    // 如果在第一張還想往右滑，或在最後一張還想往左滑，就增加阻力
+    if ((popupCurrentIndex === 0 && diff > 0) || (popupCurrentIndex === popupImages.length - 1 && diff < 0)) {
+        diff /= 3; // 將滑動距離除以3，產生阻力感
+    }
+
     const currentTranslate = -popupCurrentIndex * sliderWidth;
     const newTranslate = currentTranslate + diff;
 
     const slider = document.getElementById('image-slider-container');
-    slider.style.transform = `translateX(${newTranslate}px)`; // 用像素移動，更即時
+    slider.style.transform = `translateX(${newTranslate}px)`;
 }
 
 // --- 【新增】處理手指離開螢幕的函式 ---
 function handleTouchEnd() {
     if (!isDragging || popupImages.length <= 1) return;
     isDragging = false;
-    
-    const diff = touchCurrentX - touchStartX;
-    const swipeThreshold = 50; // 設定一個滑動閾值，避免輕微誤觸
 
-    // 判斷滑動方向和距離
-    if (diff < -swipeThreshold) {
-        // 向左滑，顯示下一張
+    const diff = touchCurrentX - touchStartX;
+    const swipeThreshold = 50;
+
+    // 判斷滑動方向、距離、以及是否還有下一張/上一張
+    if (diff < -swipeThreshold && popupCurrentIndex < popupImages.length - 1) {
         showNextInPopup();
-    } else if (diff > swipeThreshold) {
-        // 向右滑，顯示上一張
+    } else if (diff > swipeThreshold && popupCurrentIndex > 0) {
         showPrevInPopup();
     } else {
-        // 滑動距離不夠，彈回原位
+        // 不管是滑動距離不夠，還是已經滑到邊界，都彈回原位
         slideToIndex(popupCurrentIndex);
     }
-    
-    // 清理起始點，為下次滑動做準備
+
     touchStartX = 0;
     touchCurrentX = 0;
 }
-
 
 function closePopup() {
     document.body.classList.remove('popup-is-open');
