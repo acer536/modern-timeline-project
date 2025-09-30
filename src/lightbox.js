@@ -78,6 +78,7 @@ function handleLightboxTouchStart(e) {
     if (imageList.length <= 1) return;
     isDragging = true;
     touchStartX = e.touches[0].clientX;
+    touchCurrentX = touchStartX; // <<< 新增這一行來修正點擊 bug
     const slider = document.getElementById('lightbox-slider-container');
     slider.style.transition = 'none';
     sliderWidth = slider.offsetWidth;
