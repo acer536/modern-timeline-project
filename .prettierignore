@@ -1,0 +1,8 @@
+# 忽略 Node.js 依賴套件
+node_modules
+
+# 忽略建置後的輸出資料夾
+dist
+
+# 忽略 lock 檔案
+package-lock.json

@@ -1,210 +1,468 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Roots of Conflict - A Century of the Israeli-Palestinian Struggle</title>
-    <meta name="description" content="An interactive timeline exploring a century of the Israeli-Palestinian conflict. Discover the key events, from attacks to peace accords, that define the struggle and its origins." />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      The Roots of Conflict - A Century of the Israeli-Palestinian Struggle
+    </title>
+    <meta
+      name="description"
+      content="An interactive timeline exploring a century of the Israeli-Palestinian conflict. Discover the key events, from attacks to peace accords, that define the struggle and its origins."
+    />
 
-    <meta property="og:title" content="The Roots of Conflict: A Century of Israeli-Palestinian Struggle" />
-    <meta property="og:description" content="Explore pivotal moments in the last 100 years of the Israeli-Palestinian conflict, from major attacks and wars to landmark peace initiatives and critical turning points." />
+    <meta
+      property="og:title"
+      content="The Roots of Conflict: A Century of Israeli-Palestinian Struggle"
+    />
+    <meta
+      property="og:description"
+      content="Explore pivotal moments in the last 100 years of the Israeli-Palestinian conflict, from major attacks and wars to landmark peace initiatives and critical turning points."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://roots-of-conflict.netlify.app/" />
-    <meta property="og:image" content="https://roots-of-conflict.netlify.app/images/og-preview.jpg" />
+    <meta
+      property="og:image"
+      content="https://roots-of-conflict.netlify.app/images/og-preview.jpg"
+    />
     <meta property="og:image:width" content="1024" />
     <meta property="og:image:height" content="536" />
 
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "The Roots of Conflict - A Century of the Israeli-Palestinian Struggle",
-      "description": "Explore pivotal moments in the last 100 years of the Israeli-Palestinian conflict, from major attacks and wars to landmark peace initiatives and critical turning points.",
-      "url": "https://roots-of-conflict.netlify.app/",
-      "mainEntity": {
-        "@type": "ItemList",
-        "name": "A Timeline of the Israeli-Palestinian Conflict",
-        "description": "A detailed timeline chronicling the key conflicts, attacks, peace processes, and turning points between Israelis and Palestinians from the 1920s to the present day."
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "The Roots of Conflict - A Century of the Israeli-Palestinian Struggle",
+        "description": "Explore pivotal moments in the last 100 years of the Israeli-Palestinian conflict, from major attacks and wars to landmark peace initiatives and critical turning points.",
+        "url": "https://roots-of-conflict.netlify.app/",
+        "mainEntity": {
+          "@type": "ItemList",
+          "name": "A Timeline of the Israeli-Palestinian Conflict",
+          "description": "A detailed timeline chronicling the key conflicts, attacks, peace processes, and turning points between Israelis and Palestinians from the 1920s to the present day."
+        }
       }
-    }
     </script>
 
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <script>window.chartJsLoaded = false; window.chartJsError = false;</script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer id="chartjs-script" onload="window.chartJsLoaded = true;" onerror="window.chartJsError = true;"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Montserrat:wght@800&family=Open+Sans:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./src/styles.css">    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
     <script>
-	    (function() {
-	        const storedTheme = localStorage.getItem('theme');
-	        if (storedTheme) {
-	            if (storedTheme === 'dark') {
-	                document.documentElement.classList.add('dark-mode');
-	            }
-	        } else {
-	            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-	                document.documentElement.classList.add('dark-mode');
-	            }
-	        }
-	    })();
-	</script>
-</head>
-<body>
+      window.chartJsLoaded = false;
+      window.chartJsError = false;
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js"
+      defer
+      id="chartjs-script"
+      onload="window.chartJsLoaded = true;"
+      onerror="window.chartJsError = true;"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Montserrat:wght@800&family=Open+Sans:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script>
+      (function () {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+          if (storedTheme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+          }
+        } else {
+          if (
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+          ) {
+            document.documentElement.classList.add('dark-mode');
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
     <div id="splashScreen">
-        <div id="ember-container"></div>
-        <div id="splashIntroSequence">
-            <div>
-                <p class="intro-line" style="opacity: 0;">仇恨，點燃了無盡的戰火...</p>
-                <p class="intro-line" style="opacity: 0;">和平，在槍響中一次次遠去...</p>
-                <p class="intro-line" style="opacity: 0;">真相，早已被撕裂，拼湊成各自的信仰...</p>
-            </div>
+      <div id="ember-container"></div>
+      <div id="splashIntroSequence">
+        <div>
+          <p class="intro-line" style="opacity: 0">仇恨，點燃了無盡的戰火...</p>
+          <p class="intro-line" style="opacity: 0">
+            和平，在槍響中一次次遠去...
+          </p>
+          <p class="intro-line" style="opacity: 0">
+            真相，早已被撕裂，拼湊成各自的信仰...
+          </p>
         </div>
-        <div id="splashMainMenu" style="opacity: 0; display: none;">
-            <div class="splash-content">
-                <p class="splash-title animate-on-load" id="splashTitleText">仇恨的根源</p>
-                <p class="splash-subtitle animate-on-load" id="splashSubtitleText">巴以百年衝突史</p>
-                <button id="enterTimelineButton" class="click-to-enter animate-on-load">開始探索</button>
-            </div>            
-            <div id="splashLangSelector" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10;">
-                <button id="langToggleButton" class="animate-on-load" style="background-color: transparent; border: none; color: var(--splash-text-secondary); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; cursor: pointer; transition: color 0.2s;">Eng</button>
-            </div>
+      </div>
+      <div id="splashMainMenu" style="opacity: 0; display: none">
+        <div class="splash-content">
+          <p class="splash-title animate-on-load" id="splashTitleText">
+            仇恨的根源
+          </p>
+          <p class="splash-subtitle animate-on-load" id="splashSubtitleText">
+            巴以百年衝突史
+          </p>
+          <button
+            id="enterTimelineButton"
+            class="click-to-enter animate-on-load"
+          >
+            開始探索
+          </button>
         </div>
+        <div
+          id="splashLangSelector"
+          style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10"
+        >
+          <button
+            id="langToggleButton"
+            class="animate-on-load"
+            style="
+              background-color: transparent;
+              border: none;
+              color: var(--splash-text-secondary);
+              padding: 0.5rem 1rem;
+              border-radius: 6px;
+              font-size: 0.9rem;
+              cursor: pointer;
+              transition: color 0.2s;
+            "
+          >
+            Eng
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="mainContentWrapper" class="initially-hidden">
-		<div id="menu-overlay"></div>
-        <div id="otherEventsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="otherEventsModalTitleText" aria-describedby="otherEventsModalList">
-            <div class="modal-content" tabindex="-1">
-                <button id="closeOtherEventsModalButton" class="close-button" aria-label="關閉彈窗">&times;</button>
-                <h3 id="otherEventsModalTitleText" class="modal-title">其他相關事件</h3>
-                <div class="modal-body" aria-live="polite">
-                    <ul id="otherEventsModalList"></ul>
-                </div>
-            </div>
+      <div id="menu-overlay"></div>
+      <div
+        id="otherEventsModal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="otherEventsModalTitleText"
+        aria-describedby="otherEventsModalList"
+      >
+        <div class="modal-content" tabindex="-1">
+          <button
+            id="closeOtherEventsModalButton"
+            class="close-button"
+            aria-label="關閉彈窗"
+          >
+            &times;
+          </button>
+          <h3 id="otherEventsModalTitleText" class="modal-title">
+            其他相關事件
+          </h3>
+          <div class="modal-body" aria-live="polite">
+            <ul id="otherEventsModalList"></ul>
+          </div>
         </div>
+      </div>
 
-        <div id="rocketStatsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="rocketStatsModalTitleText" aria-describedby="rocketStatsModalBodyContent">
-            <div class="modal-content" tabindex="-1">
-                <button id="closeRocketStatsModalButton" class="close-button" aria-label="關閉彈窗">&times;</button>
-                <h3 id="rocketStatsModalTitleText" class="modal-title">加薩火箭攻擊趨勢圖</h3>
-                <div id="rocketStatsModalBodyContent" class="modal-body" aria-live="polite">
-                    <!-- Chart or table content will be injected here -->
-                </div>
-            </div>
+      <div
+        id="rocketStatsModal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rocketStatsModalTitleText"
+        aria-describedby="rocketStatsModalBodyContent"
+      >
+        <div class="modal-content" tabindex="-1">
+          <button
+            id="closeRocketStatsModalButton"
+            class="close-button"
+            aria-label="關閉彈窗"
+          >
+            &times;
+          </button>
+          <h3 id="rocketStatsModalTitleText" class="modal-title">
+            加薩火箭攻擊趨勢圖
+          </h3>
+          <div
+            id="rocketStatsModalBodyContent"
+            class="modal-body"
+            aria-live="polite"
+          ></div>
         </div>
-        
-        <div id="eventTooltip" class="event-tooltip" role="tooltip"></div>
+      </div>
 
-        <header class="site-hero" id="siteHero">
-            <div class="site-hero-stage-wrapper" id="heroStage1Wrapper">
-                <div class="site-hero-content">
-                    <h1 id="heroTitle" class="animate-on-load">和平為何總是遙不可及？</h1>
-                    <p id="heroSubtitle" class="animate-on-load">百年的血與淚，我們究竟錯過了什麼？<br class="sm:hidden">這是一趟關於選擇、暴力與錯失機會的探索之旅。</p>
-                    <button id="showPrologueButton" class="prologue-button animate-on-load" aria-label="捲動至前言">                        
-					    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-					        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-					    </svg>
-					</button>
-                </div>
-            </div>
-            <div class="site-hero-stage-wrapper" id="prologueSection">
-                <div class="site-hero-content">
-                    <h2 class="prologue-title animate-on-load" id="prologueTitle">前言：2023年10月7日</h2>
-                    <p class="prologue-text animate-on-load" id="prologueText">                        
-                        哈瑪斯對以色列發動了史無前例的突襲，殺害了約1200人並擄走超過240名人質，引爆了新一輪的加薩戰爭，造成了慘重的人道悲劇。
-                        <br><br>
-                        這場看似突然的衝突，其實是百年恩怨的最新篇章。
-                        <br>
-                        <strong>但這一切，究竟是如何開始的？</strong>
-                    </p>
-                    <button id="startTimelineButton" class="prologue-button animate-on-load">                        
-					    <span id="startTimelineButtonText">回到起點，尋找衝突的根源</span>
-					    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:1.25rem; height:1.25rem; margin-left: 0.5rem;" aria-hidden="true">
-					        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-					    </svg>
-					</button>
-                </div>
-            </div>
-        </header>
+      <div id="eventTooltip" class="event-tooltip" role="tooltip"></div>
 
-        <nav class="period-navigation" id="periodNav"></nav>
-        <main id="contentBody"></main>
-        <footer class="site-footer">
-        	<div class="footer-theme-selector" id="footerThemeSelector">
-			    <button class="footer-theme-button" id="themeToggleButton">深色模式</button>
-			    <button class="footer-theme-button" id="footerLangToggleButton">English</button> 
-			</div>
-            <p>&copy; <span id="currentYear"></span> <span id="copyrightText">歷史事件彙編。</span></p> 
-        </footer>
-	        <div class="fab-container" id="fabContainer">
-			    <div class="fab-actions" id="fabActions">
-			        <div class="fab-action" data-filter="summary">
-					    <span class="fab-label" id="fabLabelSummary">時期摘要</span>
-					    <button class="fab-button fab-button-child" style="background-color: var(--nav-bg); border: 1px solid var(--timeline-line);">
-					        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-					          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-					        </svg>
-					    </button>
-					</div>
-			        <div class="fab-action" data-filter="pivotal-event">
-					    <span class="fab-label" id="fabLabelPivotal">關鍵時刻</span>
-					    <button class="fab-button fab-button-child" style="background-color: var(--nav-bg); border: 1px solid var(--timeline-line);">
-					        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd" /></svg>
-					    </button>
-					</div>
-			        <div class="fab-action" data-filter="peace-event">
-					    <span class="fab-label" id="fabLabelPeace">和平進程</span>
-					    <button class="fab-button fab-button-child" style="background-color: var(--nav-bg); border: 1px solid var(--timeline-line);">
-					        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-					            <path d="M403.166,74.249c-13.439,7.624-29.668,13.939-44.089,11.532c-22.738-3.783-81.345-3.533-120.246,10.609 c-38.901,14.141-109.628,58.346-130.844,65.432c-21.226,7.066-22.989,35.368,24.75,40.663c47.748,5.313,90.182-24.76,100.79-30.055 c10.609-5.313,113.17,10.609,113.17,10.609l32.268,7.951l74.394,100.56c13.053-11.34,38.872-35.406,45.409-53.696 c2.378-6.662,5.919-12.784,9.819-18.224l0.818,1.126C526.916,181.615,451.828,57.075,403.166,74.249z"></path>
-					            <path d="M359.077,205.585l-15.634-1.578c-20.514-3.177-78.524-11.437-100.309-11.437c-0.952,0-1.713,0.01-2.281,0.038 c-0.876,0.501-1.887,1.078-2.878,1.656c-15.461,9.001-51.656,30.074-93.821,30.074c-4.63,0-9.252-0.26-13.756-0.761 c-6.834-0.76-12.842-1.935-18.156-3.418c5.035,2.205,9.665,5.362,13.641,9.415c6.228,6.373,10.098,14.19,11.629,22.363 c3.63-0.973,7.393-1.512,11.244-1.512c11.802,0,22.834,4.64,31.084,13.073c8.116,8.298,12.525,19.272,12.4,30.882 c0,0.115-0.02,0.232-0.02,0.347c11.744,0.038,22.738,4.678,30.959,13.073c8.125,8.298,12.534,19.272,12.409,30.882 c-0.048,4.004-0.664,7.913-1.742,11.668c8.336,1.742,15.97,5.891,22.073,12.129c16.77,17.145,16.471,44.725-0.664,61.495 l-8.587,8.394c0.038,0,0.087,0,0.125,0c14.411-1.04,26.56-9.934,29.958-23.335c5.872,4.63,13.265,7.412,21.323,7.412 c19.041,0,34.482-15.431,34.482-34.482c0-2.002-0.212-3.947-0.539-5.854c6.066,5.286,13.968,8.51,22.642,8.51 c19.042,0,34.483-15.441,34.483-34.482c4.081,1.703,8.557,2.656,13.255,2.656c19.041,0,34.482-15.441,34.482-34.482 c0-14.459-7.075-23.874-23.873-43.32L359.077,205.585z"></path>
-					        <path d="M110.72,244.419c-8.606-8.789-22.699-8.944-31.488-0.347l-31.816,31.142 c-8.789,8.597-8.943,22.69-0.346,31.479c8.597,8.789,22.69,8.943,31.48,0.336l31.825-31.132 C119.163,267.301,119.317,253.208,110.72,244.419z"></path>
-					        <path d="M164.668,278.343c-8.597-8.799-22.69-8.953-31.48-0.347l-42.434,41.51c-8.789,8.606-8.933,22.699-0.336,31.478 c8.596,8.799,22.689,8.952,31.488,0.347l42.424-41.51C173.12,301.225,173.274,287.132,164.668,278.343z"></path>
-					        <path d="M208.016,322.644c-8.596-8.789-22.689-8.953-31.478-0.346l-42.434,41.519 c-8.789,8.596-8.943,22.689-0.337,31.488c8.597,8.779,22.69,8.934,31.48,0.327l42.434-41.51 C216.469,345.517,216.612,331.423,208.016,322.644z"></path>
-					        <path d="M240.756,377.323c-8.606-8.789-22.699-8.953-31.478-0.347l-24.751,24.221 c-8.789,8.596-8.943,22.689-0.346,31.478c8.596,8.789,22.699,8.934,31.488,0.347l24.75-24.22 C249.199,400.205,249.353,386.112,240.756,377.323z"></path>
-					        <path d="M94.798,216.501c3.35,0,6.623,0.424,9.8,1.145c-26.733-10.252-31.161-29.004-31.864-35.618 c-1.887-17.81,9.588-34.03,28.533-40.345c7.625-2.541,27.619-13.439,46.94-23.97c20.736-11.312,43.493-23.72,63.295-32.847 c-25.088-2.03-48.595-1.174-61.158,0.915c-13.507,2.252-28.601-3.148-41.51-10.098C60.171,58.5-14.916,183.039,2.595,222.191 c3.186,4.784,6.046,10.021,8.058,15.663c2.974,8.317,9.943,17.828,17.886,26.8c1.242-1.598,2.561-3.158,4.034-4.612l31.816-31.141 C72.57,220.91,83.361,216.501,94.798,216.501z"></path>
-					    </g>
-					</svg>
-					    </button>
-					</div>
-			        <div class="fab-action" data-filter="israeli-attack">
-			            <span class="fab-label" id="fabLabelIsraeli">以色列攻擊</span>
-			            <button class="fab-button fab-button-child" style="background-color: var(--israel-military-accent-color);">
-			                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.25 2.5a.75.75 0 00-1.5 0v1.313A7.003 7.003 0 003.813 10H2.5a.75.75 0 000 1.5h1.313A7.003 7.003 0 0010 17.188V18.5a.75.75 0 001.5 0v-1.313A7.003 7.003 0 0016.188 10H17.5a.75.75 0 000-1.5h-1.313A7.003 7.003 0 0010 3.812V2.5z" /></svg>
-			            </button>
-			        </div>
-			        <div class="fab-action" data-filter="palestinian-attack">
-			            <span class="fab-label" id="fabLabelPalestinian">巴勒斯坦攻擊</span>
-			            <button class="fab-button fab-button-child" style="background-color: var(--palestinian-major-accent-color);">
-			                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M8.5 2.75a.75.75 0 01.75.75v.5h1.5v-.5a.75.75 0 011.5 0v.5h.75a2.5 2.5 0 012.5 2.5v8.5a2.5 2.5 0 01-2.5-2.5h-7.5a2.5 2.5 0 01-2.5-2.5v-8.5a2.5 2.5 0 012.5-2.5H7.25v-.5a.75.75 0 01.75-.75h.5z" /></svg>
-			            </button>
-			        </div>
-			    </div>
-			    <button class="fab-button fab-main-button" id="fabMainButton" aria-haspopup="true" aria-expanded="false">
-				    <svg class="icon-plus" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
-				        <g transform="translate(0.000000, 2.000000)">
-				            <rect x="2" y="10" width="11" height="2"></rect>
-				            <path d="M12,9 L3,9 L3,7.667 C3,5.826 3.75,3 7.5,3 C11.25,3 12,5.826 12,7.667 L12,9 L12,9 Z"></path>
-				            <rect x="7" y="0" width="1" height="2"></rect>
-				            <rect transform="translate(3.656925, 1.792551) rotate(-45.000000) translate(-3.656925, -1.792551) " x="3.15692536" y="0.792551342" width="1" height="2"></rect>
-				            <rect transform="translate(12.656577, 2.206890) rotate(45.000000) translate(-12.656577, -2.206890) " x="12.1565768" y="1.20689008" width="1" height="2"></rect>
-				            <rect x="13" y="6" width="2" height="1"></rect>
-				            <rect x="0" y="6" width="1.75" height="1"></rect>
-				        </g>
-				    </svg>
-				    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" /></svg>
-				</button>
-			</div>
+      <header class="site-hero" id="siteHero">
+        <div class="site-hero-stage-wrapper" id="heroStage1Wrapper">
+          <div class="site-hero-content">
+            <h1 id="heroTitle" class="animate-on-load">
+              和平為何總是遙不可及？
+            </h1>
+            <p id="heroSubtitle" class="animate-on-load">
+              百年的血與淚，我們究竟錯過了什麼？<br
+                class="sm:hidden"
+              />這是一趟關於選擇、暴力與錯失機會的探索之旅。
+            </p>
+            <button
+              id="showPrologueButton"
+              class="prologue-button animate-on-load"
+              aria-label="捲動至前言"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="site-hero-stage-wrapper" id="prologueSection">
+          <div class="site-hero-content">
+            <h2 class="prologue-title animate-on-load" id="prologueTitle">
+              前言：2023年10月7日
+            </h2>
+            <p class="prologue-text animate-on-load" id="prologueText">
+              哈瑪斯對以色列發動了史無前例的突襲，殺害了約1200人並擄走超過240名人質，引爆了新一輪的加薩戰爭，造成了慘重的人道悲劇。
+              <br /><br />
+              這場看似突然的衝突，其實是百年恩怨的最新篇章。
+              <br />
+              <strong>但這一切，究竟是如何開始的？</strong>
+            </p>
+            <button
+              id="startTimelineButton"
+              class="prologue-button animate-on-load"
+            >
+              <span id="startTimelineButtonText">回到起點，尋找衝突的根源</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                style="width: 1.25rem; height: 1.25rem; margin-left: 0.5rem"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <nav class="period-navigation" id="periodNav"></nav>
+      <main id="contentBody"></main>
+      <footer class="site-footer">
+        <div class="footer-theme-selector" id="footerThemeSelector">
+          <button class="footer-theme-button" id="themeToggleButton">
+            深色模式
+          </button>
+          <button class="footer-theme-button" id="footerLangToggleButton">
+            English
+          </button>
+        </div>
+        <p>
+          &copy; <span id="currentYear"></span>
+          <span id="copyrightText">歷史事件彙編。</span>
+        </p>
+      </footer>
+      <div class="fab-container" id="fabContainer">
+        <div class="fab-actions" id="fabActions">
+          <div class="fab-action" data-filter="summary">
+            <span class="fab-label" id="fabLabelSummary">時期摘要</span>
+            <button
+              class="fab-button fab-button-child"
+              style="
+                background-color: var(--nav-bg);
+                border: 1px solid var(--timeline-line);
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="fab-action" data-filter="pivotal-event">
+            <span class="fab-label" id="fabLabelPivotal">關鍵時刻</span>
+            <button
+              class="fab-button fab-button-child"
+              style="
+                background-color: var(--nav-bg);
+                border: 1px solid var(--timeline-line);
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="fab-action" data-filter="peace-event">
+            <span class="fab-label" id="fabLabelPeace">和平進程</span>
+            <button
+              class="fab-button fab-button-child"
+              style="
+                background-color: var(--nav-bg);
+                border: 1px solid var(--timeline-line);
+              "
+            >
+              <svg
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <path
+                  d="M403.166,74.249c-13.439,7.624-29.668,13.939-44.089,11.532c-22.738-3.783-81.345-3.533-120.246,10.609 c-38.901,14.141-109.628,58.346-130.844,65.432c-21.226,7.066-22.989,35.368,24.75,40.663c47.748,5.313,90.182-24.76,100.79-30.055 c10.609-5.313,113.17,10.609,113.17,10.609l32.268,7.951l74.394,100.56c13.053-11.34,38.872-35.406,45.409-53.696 c2.378-6.662,5.919-12.784,9.819-18.224l0.818,1.126C526.916,181.615,451.828,57.075,403.166,74.249z"
+                ></path>
+                <path
+                  d="M359.077,205.585l-15.634-1.578c-20.514-3.177-78.524-11.437-100.309-11.437c-0.952,0-1.713,0.01-2.281,0.038 c-0.876,0.501-1.887,1.078-2.878,1.656c-15.461,9.001-51.656,30.074-93.821,30.074c-4.63,0-9.252-0.26-13.756-0.761 c-6.834-0.76-12.842-1.935-18.156-3.418c5.035,2.205,9.665,5.362,13.641,9.415c6.228,6.373,10.098,14.19,11.629,22.363 c3.63-0.973,7.393-1.512,11.244-1.512c11.802,0,22.834,4.64,31.084,13.073c8.116,8.298,12.525,19.272,12.4,30.882 c0,0.115-0.02,0.232-0.02,0.347c11.744,0.038,22.738,4.678,30.959,13.073c8.125,8.298,12.534,19.272,12.409,30.882 c-0.048,4.004-0.664,7.913-1.742,11.668c8.336,1.742,15.97,5.891,22.073,12.129c16.77,17.145,16.471,44.725-0.664,61.495 l-8.587,8.394c0.038,0,0.087,0,0.125,0c14.411-1.04,26.56-9.934,29.958-23.335c5.872,4.63,13.265,7.412,21.323,7.412 c19.041,0,34.482-15.431,34.482-34.482c0-2.002-0.212-3.947-0.539-5.854c6.066,5.286,13.968,8.51,22.642,8.51 c19.042,0,34.483-15.441,34.483-34.482c4.081,1.703,8.557,2.656,13.255,2.656c19.041,0,34.482-15.441,34.482-34.482 c0-14.459-7.075-23.874-23.873-43.32L359.077,205.585z"
+                ></path>
+                <path
+                  d="M110.72,244.419c-8.606-8.789-22.699-8.944-31.488-0.347l-31.816,31.142 c-8.789,8.597-8.943,22.69-0.346,31.479c8.597,8.789,22.69,8.943,31.48,0.336l31.825-31.132 C119.163,267.301,119.317,253.208,110.72,244.419z"
+                ></path>
+                <path
+                  d="M164.668,278.343c-8.597-8.799-22.69-8.953-31.48-0.347l-42.434,41.51c-8.789,8.606-8.933,22.699-0.336,31.478 c8.596,8.799,22.689,8.952,31.488,0.347l42.424-41.51C173.12,301.225,173.274,287.132,164.668,278.343z"
+                ></path>
+                <path
+                  d="M208.016,322.644c-8.596-8.789-22.689-8.953-31.478-0.346l-42.434,41.519 c-8.789,8.596-8.943,22.689-0.337,31.488c8.597,8.779,22.69,8.934,31.48,0.327l42.434-41.51 C216.469,345.517,216.612,331.423,208.016,322.644z"
+                ></path>
+                <path
+                  d="M240.756,377.323c-8.606-8.789-22.699-8.953-31.478-0.347l-24.751,24.221 c-8.789,8.596-8.943,22.689-0.346,31.478c8.596,8.789,22.699,8.934,31.488,0.347l24.75-24.22 C249.199,400.205,249.353,386.112,240.756,377.323z"
+                ></path>
+                <path
+                  d="M94.798,216.501c3.35,0,6.623,0.424,9.8,1.145c-26.733-10.252-31.161-29.004-31.864-35.618 c-1.887-17.81,9.588-34.03,28.533-40.345c7.625-2.541,27.619-13.439,46.94-23.97c20.736-11.312,43.493-23.72,63.295-32.847 c-25.088-2.03-48.595-1.174-61.158,0.915c-13.507,2.252-28.601-3.148-41.51-10.098C60.171,58.5-14.916,183.039,2.595,222.191 c3.186,4.784,6.046,10.021,8.058,15.663c2.974,8.317,9.943,17.828,17.886,26.8c1.242-1.598,2.561-3.158,4.034-4.612l31.816-31.141 C72.57,220.91,83.361,216.501,94.798,216.501z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="fab-action" data-filter="israeli-attack">
+            <span class="fab-label" id="fabLabelIsraeli">以色列攻擊</span>
+            <button
+              class="fab-button fab-button-child"
+              style="background-color: var(--israel-military-accent-color)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M10.25 2.5a.75.75 0 00-1.5 0v1.313A7.003 7.003 0 003.813 10H2.5a.75.75 0 000 1.5h1.313A7.003 7.003 0 0010 17.188V18.5a.75.75 0 001.5 0v-1.313A7.003 7.003 0 0016.188 10H17.5a.75.75 0 000-1.5h-1.313A7.003 7.003 0 0010 3.812V2.5z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="fab-action" data-filter="palestinian-attack">
+            <span class="fab-label" id="fabLabelPalestinian">巴勒斯坦攻擊</span>
+            <button
+              class="fab-button fab-button-child"
+              style="background-color: var(--palestinian-major-accent-color)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M8.5 2.75a.75.75 0 01.75.75v.5h1.5v-.5a.75.75 0 011.5 0v.5h.75a2.5 2.5 0 012.5 2.5v8.5a2.5 2.5 0 01-2.5-2.5h-7.5a2.5 2.5 0 01-2.5-2.5v-8.5a2.5 2.5 0 012.5-2.5H7.25v-.5a.75.75 0 01.75-.75h.5z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button
+          class="fab-button fab-main-button"
+          id="fabMainButton"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <svg
+            class="icon-plus"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <g transform="translate(0.000000, 2.000000)">
+              <rect x="2" y="10" width="11" height="2"></rect>
+              <path
+                d="M12,9 L3,9 L3,7.667 C3,5.826 3.75,3 7.5,3 C11.25,3 12,5.826 12,7.667 L12,9 L12,9 Z"
+              ></path>
+              <rect x="7" y="0" width="1" height="2"></rect>
+              <rect
+                transform="translate(3.656925, 1.792551) rotate(-45.000000) translate(-3.656925, -1.792551) "
+                x="3.15692536"
+                y="0.792551342"
+                width="1"
+                height="2"
+              ></rect>
+              <rect
+                transform="translate(12.656577, 2.206890) rotate(45.000000) translate(-12.656577, -2.206890) "
+                x="12.1565768"
+                y="1.20689008"
+                width="1"
+                height="2"
+              ></rect>
+              <rect x="13" y="6" width="2" height="1"></rect>
+              <rect x="0" y="6" width="1.75" height="1"></rect>
+            </g>
+          </svg>
+          <svg
+            class="icon-close"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
-        <div id="eventPopupOverlay" class="event-popup-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-            <div id="eventPopupContainer" class="event-popup-container" tabindex="-1">
-                </div>
-        </div>
-   
+    <div
+      id="eventPopupOverlay"
+      class="event-popup-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div
+        id="eventPopupContainer"
+        class="event-popup-container"
+        tabindex="-1"
+      ></div>
+    </div>
+
     <script type="module" src="./src/script.js" defer></script>
-</body>
+  </body>
 </html>
