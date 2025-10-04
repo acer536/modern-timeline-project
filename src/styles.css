@@ -1544,7 +1544,7 @@ html.dark-mode .rocket-stats-button:not(.chart-loading):not(:disabled):hover {
 }
 /* 高亮效果的樣式 */
 .highlight-active {
-  position: relative; /* 讓 z-index 生效的關鍵 */
+  position: relative;
   z-index: 991; /* 設定一個較高的層級，確保它在變暗圖層之上 */
   isolation: isolate;
   background-color: var(--bg-main);
@@ -1682,7 +1682,7 @@ body.highlight-overlay-active::before {
 /* 讓兩個圖示疊在一起，並設定過渡動畫 */
 .fab-main-button .icon-plus,
 .fab-main-button .icon-close {
-  position: absolute; /* 關鍵：讓它們疊在同一個位置，才能平滑切換 */
+  position: absolute; /* 讓它們疊在同一個位置，才能平滑切換 */
   transition:
     opacity 0.2s ease-in-out,
     transform 0.2s ease-in-out;
@@ -2156,10 +2156,10 @@ html.dark-mode .event-popup-source-link:hover {
 
 .lightbox-image {
   max-width: 100%;
-  height: 70vh; /* 關鍵：將圖片容器的高度固定為視窗高度的70% */
-  object-fit: contain; /* 關鍵：確保圖片完整顯示在容器內，不會被裁切 */
+  height: 70vh; /* 將圖片容器的高度固定為視窗高度的70% */
+  object-fit: contain; /* 確保圖片完整顯示在容器內，不會被裁切 */
   border-radius: 4px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 15px 5px rgba(0, 0, 0, 0.5); /* 修改陰影效果 */
   display: block;
 }
 
@@ -2338,7 +2338,7 @@ html.dark-mode .event-popup-source-link:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0.5rem 2.5rem 0.5rem; /* 【修改】上下左右的內邊距，底部留出 2rem 空間 */
+  padding: 2.5rem; /* 增加上下左右的內邊距 */
   box-sizing: border-box;
 }
 
