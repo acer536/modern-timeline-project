@@ -51,6 +51,6 @@ export const eventDetails = {
       en: 'Read the original NYT report',
     },
   },
-  // 您可以在這裡繼續新增更多事件...
+  // 在這裡繼續新增更多事件...
   // 'event_id_goes_here': { ... },
 };

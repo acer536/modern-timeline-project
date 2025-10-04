@@ -255,6 +255,10 @@ body.is-android .site-hero {
   --popup-close-bg: rgba(255, 255, 255, 0.15);
   --popup-close-border: rgba(255, 255, 255, 0.2);
   --popup-close-hover-bg: rgba(255, 255, 255, 0.3);
+  --lightbox-bg: rgba(18, 18, 18, 0.85); /* 深色背景 */
+  --lightbox-text: #e5e7eb; /* 亮色文字 */
+  --lightbox-button-bg: rgba(255, 255, 255, 0.1);
+  --lightbox-button-hover-bg: rgba(255, 255, 255, 0.2);
 }
 
 html:not(.dark-mode) {
@@ -298,6 +302,10 @@ html:not(.dark-mode) {
   --popup-close-bg: rgba(0, 0, 0, 0.1);
   --popup-close-border: rgba(0, 0, 0, 0.15);
   --popup-close-hover-bg: rgba(0, 0, 0, 0.25);
+  --lightbox-bg: rgba(244, 244, 245, 0.92); /* 淺色背景 */
+  --lightbox-text: #3f3f46; /* 深色文字 */
+  --lightbox-button-bg: rgba(0, 0, 0, 0.08);
+  --lightbox-button-hover-bg: rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -2118,7 +2126,7 @@ html.dark-mode .event-popup-source-link:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: var(--lightbox-bg);
   z-index: 2000; /* 確保在最上層 */
   display: flex;
   align-items: center;
@@ -2157,7 +2165,7 @@ html.dark-mode .event-popup-source-link:hover {
 
 /* --- 新增：燈箱圖片說明樣式 --- */
 .lightbox-caption {
-  color: #e5e7eb;
+  color: var(--lightbox-text);
   text-align: center;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
@@ -2174,7 +2182,7 @@ html.dark-mode .event-popup-source-link:hover {
   top: 1rem;
   right: 1.5rem;
   font-size: 2.5rem;
-  color: #fff;
+  color: var(--lightbox-text);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -2194,8 +2202,8 @@ html.dark-mode .event-popup-source-link:hover {
   z-index: 20;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.3);
-  color: white;
+  background-color: var(--lightbox-button-bg);
+  color: var(--lightbox-text);
   border: none;
   font-size: 2rem;
   cursor: pointer;
@@ -2209,9 +2217,10 @@ html.dark-mode .event-popup-source-link:hover {
     opacity 0.2s,
     background-color 0.2s;
 }
+
 .lightbox-nav-button:hover {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--lightbox-button-hover-bg);
 }
 .lightbox-nav-button.prev {
   left: 1rem;

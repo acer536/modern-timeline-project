@@ -3574,7 +3574,6 @@ function applyTheme() {
   const htmlEl = document.documentElement;
   if (!htmlEl) return;
 
-  // --- 修改後的邏輯 ---
   // 1. 檢查使用者是否手動設定過主題
   const storedTheme = localStorage.getItem('theme');
   let isDark;
@@ -3588,7 +3587,6 @@ function applyTheme() {
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  // --- 修改結束 ---
 
   htmlEl.classList.toggle(CSS_CLASSES.DARK_MODE, isDark);
   updateThemeButtonsUI();
@@ -3643,7 +3641,6 @@ function updateThemeButtonsUI() {
   const themeToggleButton = document.getElementById('themeToggleButton');
   if (!themeToggleButton) return;
 
-  // --- 修改後的邏輯 ---
   // 直接檢查 HTML 元素上是否有 'dark-mode' class 來判斷當前主題
   const isCurrentlyDark = document.documentElement.classList.contains(
     CSS_CLASSES.DARK_MODE
@@ -4015,7 +4012,6 @@ function setupEventListeners() {
   const themeToggleButton = document.getElementById('themeToggleButton');
   if (themeToggleButton) {
     themeToggleButton.addEventListener('click', () => {
-      // --- 修改後的邏輯 ---
       // 1. 直接偵測頁面當前是否為深色模式
       const isCurrentlyDark = document.documentElement.classList.contains(
         CSS_CLASSES.DARK_MODE
