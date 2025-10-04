@@ -252,6 +252,9 @@ body.is-android .site-hero {
   --splash-bg-image: var(--splash-bg-image-dark);
   --splash-bg-size: var(--splash-bg-size-dark);
   --ripple-color: rgba(255, 255, 255, 0.2);
+  --popup-close-bg: rgba(255, 255, 255, 0.15);
+  --popup-close-border: rgba(255, 255, 255, 0.2);
+  --popup-close-hover-bg: rgba(255, 255, 255, 0.3);
 }
 
 html:not(.dark-mode) {
@@ -292,6 +295,9 @@ html:not(.dark-mode) {
   --splash-bg-image: var(--splash-bg-image-light);
   --splash-bg-size: var(--splash-bg-size-light);
   --ripple-color: rgba(0, 0, 0, 0.1);
+  --popup-close-bg: rgba(0, 0, 0, 0.1);
+  --popup-close-border: rgba(0, 0, 0, 0.15);
+  --popup-close-hover-bg: rgba(0, 0, 0, 0.25);
 }
 
 html {
@@ -1967,9 +1973,16 @@ html:not(.dark-mode) body.highlight-overlay-active .fab-container:not(.active) {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: var(--text-primary);
-  border: none;
+
+  /* --- 使用 CSS 變數來實現主題感知 --- */
+  background-color: var(--popup-close-bg);
+  color: #ffffff; /* 圖示永遠為白色以確保最大對比度 */
+  border: 1px solid var(--popup-close-border);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 陰影讓白色圖示在淺色背景上也能看清 */
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
@@ -1981,8 +1994,9 @@ html:not(.dark-mode) body.highlight-overlay-active .fab-container:not(.active) {
     background-color 0.2s,
     transform 0.2s;
 }
+
 .event-popup-close-button:hover {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--popup-close-hover-bg);
   transform: rotate(90deg);
 }
 
