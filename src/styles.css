@@ -2156,11 +2156,18 @@ html.dark-mode .event-popup-source-link:hover {
 
 .lightbox-image {
   max-width: 100%;
-  height: 70vh; /* 將圖片容器的高度固定為視窗高度的70% */
-  object-fit: contain; /* 確保圖片完整顯示在容器內，不會被裁切 */
+  max-height: 80vh; /* 在所有裝置上，圖片最高不超過螢幕的 80% */
+  object-fit: contain;
   border-radius: 4px;
-  box-shadow: 0 4px 15px 5px rgba(0, 0, 0, 0.5); /* 修改陰影效果 */
+  box-shadow: 0 4px 15px 5px rgba(0, 0, 0, 0.5);
   display: block;
+}
+
+/* 只在螢幕寬度大於 640px 的裝置 (電腦/平板) 上套用固定高度 */
+@media (min-width: 640px) {
+  .lightbox-image {
+    height: 70vh; /* 將圖片的高度固定為螢幕高度的 70% */
+  }
 }
 
 /* --- 新增：燈箱圖片說明樣式 --- */
@@ -2327,13 +2334,11 @@ html.dark-mode .event-popup-source-link:hover {
 
 #lightbox-slider-container {
   display: flex;
-  height: 100%;
   width: 100%;
 }
 
 .lightbox-slide {
   width: 100%;
-  height: 100%;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -2344,70 +2349,4 @@ html.dark-mode .event-popup-source-link:hover {
 
 .lightbox-nav-button.is-hidden {
   display: none !important;
-}
-
-/* --- 燈箱 (Lightbox) 行動裝置最終整合修正 (新版) --- */
-@media (max-width: 640px) {
-  /* 1. 內容區不再負責置中，只作為一個容器 */
-  .lightbox-content {
-    height: 100%;
-    max-height: 95vh;
-    display: flex;
-    flex-direction: column; /* 保持垂直堆疊 */
-    justify-content: center; /* 讓內容在垂直方向上置中 */
-    align-items: center;
-    width: 100%; /* 確保容器撐滿寬度 */
-  }
-
-  /* 2. 圖片可視區 (viewport) 的設定 */
-  #lightbox-viewport {
-    width: 100%;
-    display: flex;
-    align-items: center; /* 讓圖片在自己的容器內垂直置中 */
-    justify-content: center;
-    /* 移除 flex-grow，讓它的大小由內容決定 */
-  }
-
-  /* 3. 圖片本身的尺寸限制 */
-  .lightbox-image {
-    height: auto;
-    max-height: 65vh; /* 限制圖片最大高度 */
-    box-shadow: none; /* 移除手機上的陰影 */
-  }
-
-  /* 4. 圖片說明文字的樣式 */
-  .lightbox-caption {
-    /* 將說明文字從圖片群組中獨立出來，並定位在底部 */
-    position: absolute;
-    bottom: 15vh; /* 距離螢幕底部 15% 的高度 */
-    left: 0;
-    right: 0;
-    padding: 0.5rem 1rem;
-    margin: 0 auto; /* 水平置中 */
-    max-width: 90vw; /* 限制最大寬度 */
-    z-index: 10;
-  }
-
-  /* 5. 箭頭按鈕的定位 (維持相對於整個螢幕置中) */
-  .lightbox-nav-button {
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: transparent; /* 移除背景色 */
-  }
-
-  .lightbox-nav-button:hover {
-    background-color: rgba(0, 0, 0, 0.25);
-  }
-
-  .lightbox-nav-button.prev {
-    left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  .lightbox-nav-button.next {
-    right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
 }
